@@ -1,0 +1,72 @@
+-- selezionare i film che non sono stati distribuiti nei paesi nei quali sono sono stati prodotti
+select *
+from imdb.produced p left join imdb.released r on p.movie = r.movie and p.country = r.country
+where r.movie is null;
+
+-- voglio un film m1 se non esiste un record di produced p1 relativo a m1 per il quale esiste il record di released relativo a m1 e allo stesso paese di p1
+select m1.id, m1.official_title
+from imdb.movie m1
+where not exists(
+	select *
+	from imdb.produced p1
+	where m1.id = p1.movie and exists(
+		select *
+		from imdb.released r1
+		where r1.movie = m1.id  and r1.country = p1.country
+	)
+)
+
+-- altra soluzione
+select m1.id, m1.official_title
+from imdb.movie m1
+where not exists(
+	select *
+	from imdb.produced p1 inner join imdb.released r1  on r1.movie = p1.movie and r1.country = p1.country
+	where m1.id = p1.movie
+)
+
+-- selezionare i film nel cui cast non figurano attori nati in paesi dove il fim è stato prodotto
+-- selezionare i film che sono stati distribuiti in tutti i paesi
+-- un film m è nel risultato se non esiste un paese p per il quale non esiste la distribuzione di m in p
+
+-- selezionare le persone che hanno recitato in tutti i film di genere Crime
+with crime as (
+	select movie
+	from imdb.genre
+	where genre = 'Crime'
+)
+select p.id, p.first_name
+from imdb.person p
+where not exists(
+	select 1
+	from crime cr
+	where not exists(
+		select 1
+		from imdb.crew c
+		where p.id = c.person and cr.movie = c.movie and lower(p_role) = 'actor'
+	)
+);
+
+-- selezionare le coppie di attori che hanno recitato sempre insieme
+-- una coppia di attori X, Y è nel risultato se non esiste un movie m1 nel quale X, Y hanno recitato X senza Y o Y senza X
+with persons as (
+	select distinct person
+	from imdb.crew c 
+	where p_role = 'actor'
+), actors_pairs(p1, p2) as ( -- sto specificando gli attributi che sto restituiendo prendendo due tabelle in input
+	select p1.person, p2.person
+	from persons p1, person p2
+	where p1.person > p2.person -- escludo una persona con se stessa, ma anche i reciproci del X con Y e Y con X
+)
+
+select *
+from actors_pairs ap
+where not exists(
+	select *
+	from imdb.crew c1, imdb.crew c2
+	where c1.person = ap.p1 and c2.person = ap.p2 and c1.p_role = 'actor' and c2.p_role = 'actor' and not exists (
+		
+	)
+)
+
+
