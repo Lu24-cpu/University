@@ -86,11 +86,10 @@ public class Importo implements Comparable<Importo> {
      * @throws InvalidResultException se il risultato è negativo
      */
     public Importo Add(Importo operando) throws InvalidImportoException, InvalidResultException {
-        if(units<0 || operando.units < 0) throw new InvalidImportoException("Importo invalido");
         int result = getTotalCents() + operando.getTotalCents();
 
         if(result < 0) throw new InvalidResultException("il risultato è negativo");
-        return new Importo(result);
+        return new Importo(result/100, result%100);
     }
 
     /**
@@ -102,11 +101,11 @@ public class Importo implements Comparable<Importo> {
      * @throws InvalidResultException se il risultato è negativo
      */
     public Importo Sub(Importo operando) throws InvalidImportoException, InvalidResultException {
+        int result = getTotalCents() - operando.getTotalCents();
+
         if(getTotalCents() - operando.getTotalCents() < 0) throw new InvalidResultException("Il risultato è negativo");
-        else {
-            int result = getTotalCents() - operando.getTotalCents();
-            return new Importo(result);
-        }
+        
+        return new Importo(result);
     }
 
     /**
@@ -117,8 +116,9 @@ public class Importo implements Comparable<Importo> {
      * @throws InvalidImportoException se l'{@code operando} passato non è un valore multiplo di 100
      */
     public Importo Mul(int operando) throws InvalidImportoException {
-        if(operando%100 != 0) throw new InvalidImportoException("È stato inserito un moltiplicatore non valido");
-        int result = getTotalCents() * (operando/100);
+        int result = getTotalCents() * operando;
+
+        if(result%100 != 0) throw new InvalidImportoException("È stato inserito un moltiplicatore non valido");
 
         return new Importo(result);
     }

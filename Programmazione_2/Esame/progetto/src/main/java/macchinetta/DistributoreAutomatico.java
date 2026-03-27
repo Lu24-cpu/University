@@ -57,35 +57,24 @@ public class DistributoreAutomatico {
      * @return la stringa rappresentativa della quantità di {@code prodotto} che non è stata inserita
      * @throws SlotException se nel binario scelto non può essere caricato tale prodotto
      */
-    public String caricaBinario(Prodotto product, int quantity) throws SlotException {
-        StringBuilder remained = new StringBuilder();
-
-        int i = quantity - 1;
-        remained.append("+ ");
+    public int caricaBinario(Prodotto product, int quantity) throws SlotException {
         for (Binario rail : this.rails) {
             try {
-                rail.uploadRail(product, quantity);
-                quantity = 0;
-                break;
-            } catch (CapacityException e) {
-                while (i >= 0) {
-                    try {
-                        rail.uploadRail(product, i);
-                        break;
-                    } catch (CapacityException t) {
-                        i--;
-                    } catch (TagliaException | InvalidItemException t) { }
-                }
+                int finale = rail.getCapacity() - rail.getQuantity();
 
-                quantity -= i;
-            } catch (InvalidItemException | TagliaException e) {
-                continue;
-            }
-            if (quantity == 0) break;
+                if(quantity <= finale) {
+                    rail.uploadRail(product, quantity);
+                    quantity = 0;
+                }
+                else {
+                    rail.uploadRail(product, quantity-finale);
+                    quantity -= finale;
+                }
+                break;
+            } catch (CapacityException | InvalidItemException | TagliaException e) {}
         }
         
-        remained.append(quantity);
-        return remained.toString();
+        return quantity;
     }
 
     /**
@@ -100,7 +89,7 @@ public class DistributoreAutomatico {
      * @throws InsufficentChangeException se non è stato possbile calcolare il {@code resto} per mancanza di {@code monete}
      * @throws InsufficentValueException se non è stato possbile calcolare il {@code resto} per {@code importo} insufficente in cassa
      */
-    public String scaricaBinario(int rail, Importo importo) throws SlotException, EmptyRailException, InsufficentChangeException, InsufficentValueException {
+    public Aggregato scaricaBinario(int rail, Importo importo) throws SlotException, EmptyRailException, InsufficentChangeException, InsufficentValueException {
         if (rail > this.rails.size()) throw new SlotException("Il binario non esiste");
         if (this.rails.get(rail).getProduct() == null || this.rails.get(rail).getQuantity() == 0) throw new EmptyRailException("Il Binario è vuoto");
 
@@ -110,7 +99,7 @@ public class DistributoreAutomatico {
             Aggregato changeAgg = strategy.Resto(cashier, resto);
             
             rails.get(rail).unloadRail(1);
-            return "- " + changeAgg;
+            return changeAgg;
         } catch (InsufficentChangeException e) {
             throw new InsufficentChangeException("resto non riuscito");
         } catch (InsufficentValueException | CapacityException | InvalidImportoException | InvalidResultException | NumberFormatException e) {

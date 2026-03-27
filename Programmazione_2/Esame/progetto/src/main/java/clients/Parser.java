@@ -204,7 +204,7 @@ public class Parser {
             prodotto.append(specifiche[0]).append("|").append(specifiche[1]).append("|").append(specifiche[2]);
 
             try {
-                return macchinetta.caricaBinario(parseProdotto(prodotto.toString()), quantity);
+                return "+ " + macchinetta.caricaBinario(parseProdotto(prodotto.toString()), quantity);
             } catch (TagliaException | InvalidImportoException e) {
                 System.out.println(e.getMessage());
             }
@@ -229,7 +229,7 @@ public class Parser {
                 }
             }
 
-            return macchinetta.scaricaBinario(rail, importo);
+            return "- " + macchinetta.scaricaBinario(rail, importo);
         }
 
         return "";

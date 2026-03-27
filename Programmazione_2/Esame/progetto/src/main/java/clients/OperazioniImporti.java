@@ -28,7 +28,6 @@ import customException.InvalidResultException;
 import macchinetta.Importo;
 
 public class OperazioniImporti {
-
     public static void main(String[] args) {
         try(Scanner sc = new Scanner(System.in)) {
             while (sc.hasNext()) {
@@ -37,20 +36,23 @@ public class OperazioniImporti {
 
                 try{
                     Importo value1 = Parser.parseImporto(elementi[0]);
-                    Importo value2 = Parser.parseImporto(elementi[2]);
+                    Importo value2;
                     Importo result = new Importo(0);
                     int value = 0;
                     switch (elementi[1]) {
                         case "+":
+                            value2 = Parser.parseImporto(elementi[2]);
                             result = value1.Add(value2);
                             break;
                         case "-":
+                            value2 = Parser.parseImporto(elementi[2]);
                             result = value1.Sub(value2);
                             break;
                         case "*":
-                            result = value1.Mul(value2.getTotalCents());
+                            result = value1.Mul(Integer.parseInt(elementi[2]));
                             break;
                         case "/":
+                            value2 = Parser.parseImporto(elementi[2]);
                             value = value1.Div(value2);
                             break;
                         default:

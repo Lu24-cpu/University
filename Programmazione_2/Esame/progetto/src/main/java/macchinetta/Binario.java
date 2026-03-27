@@ -1,6 +1,7 @@
 package macchinetta;
 
 import customException.CapacityException;
+import customException.EmptyRailException;
 import customException.InvalidItemException;
 import customException.TagliaException;
 
@@ -59,20 +60,20 @@ public class Binario {
 
         if(product.equals(new Prodotto("", size, new Importo(0)))) {
             product = prodotto;
-            quantity = quantità;
-        } else {
-            quantity += quantità;
         }
+
+        quantity += quantità;
     }
 
     /**
-     * {@code downloadRail} è un metodo che scarica una data quantità di prodotto da un {@code binario}
+     * {@code unloadRail} è un metodo che scarica una data quantità di prodotto da un {@code binario}
      * 
      * @param quantità è la quantità di prodotto che si vuole rimuovede dal {@code binario}
      * @throws CapacityException se si cerca di rimuovere più prodotti dal {@code binario} rispetto a quelli presenti.
+     * @throws EmptyRailException se il {@code binario} è vuoto
      */
-    public void unloadRail(int quantità) throws CapacityException {
-        if(quantity == 0) throw new CapacityException("Il binario è vuoto");
+    public void unloadRail(int quantità) throws CapacityException, EmptyRailException {
+        if(quantity == 0) throw new EmptyRailException("Il binario è vuoto");
         if(quantity < quantità) throw new CapacityException("Richiesta di scarico binario eccessivo");
     
         quantity -= quantità;
@@ -94,6 +95,15 @@ public class Binario {
      */
     public int getQuantity(){
         return quantity;
+    }
+
+    /**
+     * {@code getCapacity} restituisce la {@code capacità} massima del {@code binario}
+     * 
+     * @return l'intero rappresentativo della {@code capacità}
+     */
+    public int getCapacity() {
+        return capacity;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class Aggregato {
      *      - Le monete possibili sono solo quelle della classe enum
      *      - La quantità di ogni moneta non può essere negativa
      *      - Una moneta può avere quantità pari a 0, ma non verrà considerata
-     * 
+     *
      * Funzione di Astrazione (AF):
      *      - L'aggregato è la rappresentazione di un insieme di monete con la rispettiva quantità
      * 
@@ -38,29 +38,30 @@ public class Aggregato {
         aggregato = new TreeMap<>();
     }
 
-    /** 
+    /**
      * {@code Insert} permette l'inserimento di una moneta nell'{@code aggregato} tramite una {@code moneta} e una {@code quantità}
-     * 
+     *
      * @param coin è la {@code moneta} che va inserita nell'{@code aggregato}
      * @param quantity è la quantità della {@code moneta} inserita
      * @throws InvalidImportoException se nel calcolo dell'importo viene trovato un errore nel calcolo dell'{@code importo} totale
      * @throws InvalidResultException se il risultato della somma tra il vecchio importo e la moneta con la quantità inserita è negativo
      */
     public void Insert(Moneta coin, int quantity) throws InvalidImportoException, InvalidResultException {
+        if (quantity < 0) throw new InvalidResultException("quantità negativa");
         aggregato.put(coin, quantity+aggregato.getOrDefault(coin, 0));
     }
 
     /**
      * {@code Insert} è una seconda versione dell'inserimento all'interno di un {@code aggregato} delle monete.
      * In questo caso viene passato in input un altro {@code aggregato} e viene inserito in quello corrente
-     * 
+     *
      * @param change è l'{@code aggregato} da reinserire in quello corrente
      * @throws InvalidImportoException se uno dei due operandi della somma dell'importo non è valido
      * @throws InvalidResultException se il risultato dell'importo è negativo.
      */
     public void Insert(Aggregato change) throws InvalidImportoException, InvalidResultException {
         for (Map.Entry<Moneta, Integer> value : change.getAggregato().entrySet()) {
-            aggregato.put(value.getKey(), value.getValue());
+            Insert(value.getKey(), value.getValue());
         }
     }
 
@@ -75,13 +76,13 @@ public class Aggregato {
      * @throws InvalidResultException se il risultato del calcolo dell'{@code importo} risulta negativa
      */
     public void Remove(Moneta coin, int quantity) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException {
-        if (quantity == 0) throw new InsufficentcoinsException("Si è cercato di inserire una quantità nulla di moneta");
+        if (aggregato.get(coin) - quantity < 0) throw new InsufficentcoinsException("quantità di monete insufficente");
         if(aggregato.containsKey(coin) && aggregato.get(coin) > quantity) {
             aggregato.put(coin, aggregato.get(coin)-quantity);
         }
         else {
             if (getTotalImporto().getTotalCents() < quantity * coin.getValue().getTotalCents()) throw new TotalvalueException("Valore complessivo non sufficente");
-            if (!aggregato.containsKey(coin) || aggregato.get(coin) < quantity) throw new InsufficentcoinsException("Quantità di moneta insufficente");
+            throw new InsufficentcoinsException("Quantità di moneta insufficente");
         }
     }
 
@@ -89,16 +90,30 @@ public class Aggregato {
      * {@code Remove} prende in input un aggregato e rimuove le monete di tale {@code aggregato} da quello corrente
      * 
      * @param change è l'{@code aggregato} che va rimosso da quello corrente
+     * @throws TotalvalueException se l'imprto totale che si vuole togliere è maggiore di quello presente nell'{@code aggregato}
+     * @throws InsufficentcoinsException se la quantità di moneta nell'{@code aggregato} non è sufficente
+     * @throws InvalidImportoException se il calcolo dell'{@code importo} totale non è corretto
+     * @throws InvalidResultException se il risultato del calcolo dell'{@code importo} risulta negativa
      */
-    public void Remove(Aggregato change) {
+    public void Remove(Aggregato change) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException {
+        Aggregato copia = new Aggregato();
+        
+        for (Map.Entry<Moneta, Integer> value : aggregato.entrySet()) {
+            copia.Insert(value.getKey(), value.getValue());
+        }
+
         for (Map.Entry<Moneta, Integer> value : change.getAggregato().entrySet()) {
-            aggregato.put(value.getKey(), aggregato.get(value.getKey()) - value.getValue());
+            copia.Remove(value.getKey(), value.getValue());
+        }
+
+        for (Map.Entry<Moneta, Integer> value : copia.getAggregato().entrySet()) {
+            aggregato.put(value.getKey(), value.getValue());
         }
     }
 
     /**
      * {@code getAggregato} restituisce la rappresentazione dell'{@code aggregato} in formato di TreeMap
-     * 
+     *
      * @return è la TreeMap rappresentate l'{@code aggregato}
      */
     public TreeMap<Moneta, Integer> getAggregato(){
@@ -116,7 +131,7 @@ public class Aggregato {
         Importo total = new Importo(0);
     
         for (Map.Entry<Moneta, Integer> value : aggregato.entrySet()) {
-            total = total.Add(value.getKey().getValue().Mul(value.getValue()*100));
+            total = total.Add(value.getKey().getValue().Mul(value.getValue()));
         }
 
         return total;

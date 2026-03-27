@@ -2,11 +2,12 @@ package macchinetta;
 
 import java.util.Map;
 
-import clients.Parser;
 import customException.InsufficentChangeException;
 import customException.InsufficentValueException;
+import customException.InsufficentcoinsException;
 import customException.InvalidImportoException;
 import customException.InvalidResultException;
+import customException.TotalvalueException;
 
 /**
  * {@code Change} è una classe astratta che implementa l'interfaccia del resto ({@code StrategiaResto})
@@ -32,58 +33,38 @@ public abstract class Change implements StrategiaResto {
     @Override
     public Aggregato Resto(Aggregato cassa, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidImportoException, InvalidResultException {
         Aggregato change = new Aggregato();
+        Aggregato copy = new Aggregato();
         Map<Moneta, Integer> register = getOrder(cassa);
 
-        for (Map.Entry<Moneta, Integer> value : register.entrySet()) {
-            if (resto.compareTo(value.getKey().getValue()) >= 0) {
-                int i = 0;
-                StringBuilder calcresto = new StringBuilder();
-                calcresto.append((float) value.getKey().getValue().getTotalCents() / 100);
+        copy.Insert(cassa);
 
-                try {
-                    Importo inizialvalue = Parser.parseImporto(calcresto.toString());
-                    Importo calcoloresto = Parser.parseImporto("0");
+        if (resto.compareTo(cassa.getTotalImporto())>0) throw new InsufficentValueException("quantità insufficente di monete");
 
-                    while (calcoloresto.compareTo(resto) <= 0) {
-                        if (i == value.getValue()) break;
-                        i++;
-                        calcoloresto = calcoloresto.Add(inizialvalue);
-                    }
-
-                    if (calcoloresto.compareTo(resto) > 0) {
-                        i--;
-                        calcoloresto = calcoloresto.Sub(inizialvalue);
-                    }
-
-                    resto = resto.Sub(calcoloresto);
-
-                    if (i != 0) {
-                        change.Insert(value.getKey(), i);
-                    }
-                } catch (InvalidImportoException | InvalidResultException e) {
-                    if (e.getMessage().contains("valido")) throw new InsufficentChangeException("Resto non disponibile");
-                    else throw new InsufficentValueException("Importo nella cassa insufficente");
+        try {
+            for (Map.Entry<Moneta, Integer> value : register.entrySet()) {
+                if (resto.compareTo(value.getKey().getValue()) >= 0) {
+                    int quantity = resto.Div(value.getKey().getValue());
+                    resto = resto.Sub(value.getKey().getValue().Mul(quantity));
+                    copy.Remove(value.getKey(), quantity);
+                    change.Insert(value.getKey(), quantity);
                 }
             }
-        }
-
-        if (resto.getTotalCents() != 0) {
-            if (cassa.getTotalImporto().getTotalCents() > resto.getTotalCents()) {
-                for (Map.Entry<Moneta, Integer> coin : change.getAggregato().entrySet()) {
-                    cassa.Insert(coin.getKey(), coin.getValue());
+            
+            if (resto.getTotalCents() != 0) {
+                if (cassa.getTotalImporto().getTotalCents() > resto.getTotalCents()) {
+                    throw new InsufficentChangeException("Resto non disponibile");
+                } else {
+                    throw new InsufficentValueException("Importo nella cassa insufficente");
                 }
-
-                throw new InsufficentChangeException("Resto non disponibile");
-            } else {
-                for (Map.Entry<Moneta, Integer> coin : change.getAggregato().entrySet()) {
-                    cassa.Insert(coin.getKey(), coin.getValue());
-                }
-
-                throw new InsufficentValueException("Importo nella cassa insufficente");
             }
 
+            cassa.Remove(change);
+        } catch (TotalvalueException e) {
+            throw new InsufficentValueException("importo insufficente");
+        } catch (InsufficentcoinsException e) {
+            throw new InsufficentChangeException("quantità di moneta insufficente");
         }
-
+        
         return change;
     }
 

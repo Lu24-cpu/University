@@ -15,17 +15,6 @@ import customException.MonetaException;
  */
 public class RestoMedio implements StrategiaResto{
 
-    /*
-     * Invariante di Rappresentazione (RI):
-     *      - L'importo del resto dato in input non può essere negativo
-     *      - L'aggregato cassa data in input non può essere vuota
-     *      - L'aggregato del resto (change) deve essere vuoto per calcolare correttamente il resto
-     * 
-     * Funzione di Astrazione (AF):
-     *      - Il resto vine calcolato in base ai tagli possibili e in modo tale da non consumare solo le monete di grosso taglio o piccolo taglio
-     * 
-     */
-
     /**
      * {@code RestoMedio} è il costruttore della strategia di {@code Resto} personalizzata
      * Tale strategia cerca di non finire tutte le monete del taglio più grande o del taglio più piccolo
@@ -34,103 +23,36 @@ public class RestoMedio implements StrategiaResto{
 
     @Override
     public Aggregato Resto(Aggregato cassa, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidImportoException, InvalidResultException {
-        Aggregato change = new Aggregato();
-        int[] tagli = {200, 100, 50, 20, 10, 5, 2, 1 };
-        int k = 0, j = tagli.length;
+        Aggregato copy = new Aggregato();
+        copy.Insert(cassa);
+
+        if (resto.compareTo(cassa.getTotalImporto())>0) throw new InsufficentValueException("quantità insufficente di monete");
 
         while (k <= j) {
 
             if (k != j) {
-                if (resto.getTotalCents() >= tagli[k]) {
-                    int i = 1;
-
-                    try {
-                        Importo inizialvalue = Parser.parseImporto(Integer.toString(tagli[k]));
-                        Importo calcoloresto = Parser.parseImporto("0");
-
-                        Moneta coin = Moneta.moneta(new Importo(tagli[k]));
-                        while (calcoloresto.getTotalCents() <= resto.getTotalCents()) {
-                            if (i == cassa.getAggregato().get(coin))
-                                break;
-                            i++;
-                            calcoloresto = calcoloresto.Add(inizialvalue);
-                        }
-
-                        if (calcoloresto.getTotalCents() <= resto.getTotalCents()) {
-                            i--;
-                            calcoloresto = calcoloresto.Sub(inizialvalue);
-                        }
-
-                        resto = resto.Sub(calcoloresto);
-
-                        if (i != 0) {
-                            change.Insert(coin, cassa.getAggregato().get(coin) - i);
-                        }
-                    } catch (InvalidImportoException | InvalidResultException | MonetaException e) {
-                        throw new IllegalArgumentException("Occurred this error: " + e.getMessage());
-                    }
+                if (resto.compareTo(tagli[k].getValue()) > 0) {
+                    int quantity = resto.Div(tagli[k].getValue());
+                    resto = resto.Sub(tagli[k].getValue().Mul(quantity));
+                    copy.Remove(tagli[k], quantity);
+                    change.Insert(tagli[k], quantity);
                 }
 
-                if (resto.getTotalCents() >= tagli[j]) {
-                    int i = 1;
-
-                    try {
-                        Importo inizialvalue = Parser.parseImporto(Integer.toString(tagli[j]));
-                        Importo calcoloresto = Parser.parseImporto("0");
-                        Moneta coin = Moneta.moneta(new Importo(tagli[j]));
-                        while (calcoloresto.getTotalCents() <= resto.getTotalCents()) {
-                            if (i == cassa.getAggregato().get(coin))
-                                break;
-                            i++;
-                            calcoloresto = calcoloresto.Add(inizialvalue);
-                        }
-
-                        if (calcoloresto.getTotalCents() <= resto.getTotalCents()) {
-                            i--;
-                            calcoloresto = calcoloresto.Sub(inizialvalue);
-                        }
-
-                        resto.Sub(calcoloresto);
-
-                        if (i != 0) {
-                            change.Insert(coin, cassa.getAggregato().get(coin) - i);
-                        }
-                    } catch (InvalidImportoException | InvalidResultException | MonetaException e) {
-                        throw new IllegalArgumentException("Occurred this error:" + e.getMessage());
-                    }
+                if (resto.compareTo(tagli[j].getValue()) > 0) {
+                    int quantity = resto.Div(tagli[j].getValue());
+                    resto = resto.Sub(tagli[j].getValue().Mul(quantity));
+                    copy.Remove(tagli[j], quantity);
+                    change.Insert(tagli[j], quantity);
                 }
 
                 k++;
                 j--;
             } else {
-                if (resto.getTotalCents() >= tagli[k]) {
-                    int i = 1;
-
-                    try {
-                        Importo inizialvalue = Parser.parseImporto(Integer.toString(tagli[k]));
-                        Importo calcoloresto = Parser.parseImporto("0");
-
-                        Moneta coin = Moneta.moneta(new Importo(tagli[k]));
-                        while (calcoloresto.getTotalCents() <= resto.getTotalCents()) {
-                            if (i == cassa.getAggregato().get(coin))
-                                break;
-                            i++;
-                            calcoloresto = calcoloresto.Add(inizialvalue);
-                        }
-
-                        if (calcoloresto.getTotalCents() <= resto.getTotalCents()) {
-                            i--;
-                            calcoloresto = calcoloresto.Sub(inizialvalue);
-                        }
-
-                        resto.Sub(calcoloresto);
-
-                        if (i != 0) {
-                            change.Insert(coin, cassa.getAggregato().get(coin) - i);
-                        }
-                    } catch (InvalidImportoException | InvalidResultException | MonetaException e) {
-                        throw new IllegalArgumentException("Occurred this error:" + e.getMessage());
-                    }
+                if (resto.compareTo(tagli[k].getValue()) > 0) {
+                    int quantity = resto.Div(tagli[j].getValue());
+                    resto = resto.Sub(tagli[j].getValue().Mul(quantity));
+                    copy.Remove(tagli[j], quantity);
+                    change.Insert(tagli[j], quantity);
                 }
 
                 break;
@@ -163,5 +85,11 @@ public class RestoMedio implements StrategiaResto{
         }
 
         return change;
+    }
+
+    private Aggregato calcolo(Aggregato copia, Importo resto) {
+        Aggregato change = new Aggregato();
+        Moneta[] tagli = Moneta.values();
+        
     }
 }
