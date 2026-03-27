@@ -1,13 +1,11 @@
 package macchinetta;
 
-import java.util.Map;
-
-import clients.Parser;
 import customException.InsufficentChangeException;
 import customException.InsufficentValueException;
+import customException.InsufficentcoinsException;
 import customException.InvalidImportoException;
 import customException.InvalidResultException;
-import customException.MonetaException;
+import customException.TotalvalueException;
 
 /**
  * {@code RestoMedio} permette la gestione del calcolo di un {@code aggregato} per il resto 
@@ -28,68 +26,43 @@ public class RestoMedio implements StrategiaResto{
 
         if (resto.compareTo(cassa.getTotalImporto())>0) throw new InsufficentValueException("quantità insufficente di monete");
 
-        while (k <= j) {
+        return calcolo(copy, resto);
+    }
 
-            if (k != j) {
-                if (resto.compareTo(tagli[k].getValue()) > 0) {
-                    int quantity = resto.Div(tagli[k].getValue());
-                    resto = resto.Sub(tagli[k].getValue().Mul(quantity));
-                    copy.Remove(tagli[k], quantity);
-                    change.Insert(tagli[k], quantity);
-                }
+    private Aggregato calcolo(Aggregato copia, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidImportoException, InvalidResultException {
+        Aggregato change = new Aggregato();
+        Moneta[] tagli = Moneta.values();
+        Moneta[] reverse = Moneta.values();
 
-                if (resto.compareTo(tagli[j].getValue()) > 0) {
-                    int quantity = resto.Div(tagli[j].getValue());
-                    resto = resto.Sub(tagli[j].getValue().Mul(quantity));
-                    copy.Remove(tagli[j], quantity);
-                    change.Insert(tagli[j], quantity);
-                }
-
-                k++;
-                j--;
-            } else {
-                if (resto.compareTo(tagli[k].getValue()) > 0) {
-                    int quantity = resto.Div(tagli[j].getValue());
-                    resto = resto.Sub(tagli[j].getValue().Mul(quantity));
-                    copy.Remove(tagli[j], quantity);
-                    change.Insert(tagli[j], quantity);
-                }
-
-                break;
-            }
+        for (int i =0; i < reverse.length; i++) {
+            reverse[i] = reverse[reverse.length - i];
+            reverse[reverse.length - i] = tagli[i];
         }
 
-        if (resto.getTotalCents() != 0) {
-            if (cassa.getTotalImporto().getTotalCents() > resto.getTotalCents()) {
-                for (Map.Entry<Moneta, Integer> coin : change.getAggregato().entrySet()) {
-                    try {
-                        cassa.Insert(coin.getKey(), coin.getValue());
-                    } catch (InvalidImportoException | InvalidResultException e) {
-                        System.out.println("Occurred this error: " + e.getMessage());
-                    }
+        int i = 0;
+
+        try  {
+            while (i<=(tagli.length)/2 && resto.getTotalCents() != 0) {
+                if (resto.compareTo(tagli[i].getValue()) > 0) {
+                    int quantity = resto.Div(tagli[i].getValue());
+                    resto = resto.Sub(tagli[i].getValue().Mul(quantity));
+                    copia.Remove(tagli[i], quantity);
+                    change.Insert(tagli[i], quantity);
                 }
 
-                throw new InsufficentChangeException("Resto non disponibile");
-            } else {
-                for (Map.Entry<Moneta, Integer> coin : change.getAggregato().entrySet()) {
-                    try {
-                        cassa.Insert(coin.getKey(), coin.getValue());
-                    } catch (InvalidImportoException | InvalidResultException e) {
-                        System.out.println("Occurred this error: " + e.getMessage());
-                    }
+                if (resto.compareTo(reverse[i].getValue()) > 0) {
+                    int quantity = resto.Div(reverse[i].getValue());
+                    resto = resto.Sub(reverse[i].getValue().Mul(quantity));
+                    copia.Remove(reverse[i], quantity);
+                    change.Insert(reverse[i], quantity);
                 }
-
-                throw new InsufficentValueException("Importo nella cassa insufficente");
             }
-
+        } catch (TotalvalueException e) {
+            throw new InsufficentValueException("importo insufficente");
+        } catch (InsufficentcoinsException e) {
+            throw new InsufficentChangeException("quantità di moneta insufficente");
         }
 
         return change;
-    }
-
-    private Aggregato calcolo(Aggregato copia, Importo resto) {
-        Aggregato change = new Aggregato();
-        Moneta[] tagli = Moneta.values();
-        
     }
 }

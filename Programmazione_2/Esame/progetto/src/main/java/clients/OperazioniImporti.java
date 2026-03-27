@@ -62,7 +62,7 @@ public class OperazioniImporti {
                     else System.out.println(result.toString());
                 } catch (InvalidResultException e) {
                     System.out.println("negative-result");
-                } catch (InvalidImportoException e) {
+                } catch (InvalidImportoException | IllegalArgumentException e) {
                     System.out.println("invalid-result");
                 }
             }

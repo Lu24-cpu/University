@@ -43,10 +43,9 @@ public class Aggregato {
      *
      * @param coin è la {@code moneta} che va inserita nell'{@code aggregato}
      * @param quantity è la quantità della {@code moneta} inserita
-     * @throws InvalidImportoException se nel calcolo dell'importo viene trovato un errore nel calcolo dell'{@code importo} totale
      * @throws InvalidResultException se il risultato della somma tra il vecchio importo e la moneta con la quantità inserita è negativo
      */
-    public void Insert(Moneta coin, int quantity) throws InvalidImportoException, InvalidResultException {
+    public void Insert(Moneta coin, int quantity) throws InvalidResultException {
         if (quantity < 0) throw new InvalidResultException("quantità negativa");
         aggregato.put(coin, quantity+aggregato.getOrDefault(coin, 0));
     }
@@ -56,10 +55,9 @@ public class Aggregato {
      * In questo caso viene passato in input un altro {@code aggregato} e viene inserito in quello corrente
      *
      * @param change è l'{@code aggregato} da reinserire in quello corrente
-     * @throws InvalidImportoException se uno dei due operandi della somma dell'importo non è valido
      * @throws InvalidResultException se il risultato dell'importo è negativo.
      */
-    public void Insert(Aggregato change) throws InvalidImportoException, InvalidResultException {
+    public void Insert(Aggregato change) throws InvalidResultException {
         for (Map.Entry<Moneta, Integer> value : change.getAggregato().entrySet()) {
             Insert(value.getKey(), value.getValue());
         }
@@ -76,7 +74,7 @@ public class Aggregato {
      * @throws InvalidResultException se il risultato del calcolo dell'{@code importo} risulta negativa
      */
     public void Remove(Moneta coin, int quantity) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException {
-        if (aggregato.get(coin) - quantity < 0) throw new InsufficentcoinsException("quantità di monete insufficente");
+        if (aggregato.getOrDefault(coin, 0) - quantity < 0) throw new InsufficentcoinsException("quantità di monete insufficente");
         if(aggregato.containsKey(coin) && aggregato.get(coin) > quantity) {
             aggregato.put(coin, aggregato.get(coin)-quantity);
         }

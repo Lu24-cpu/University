@@ -29,7 +29,6 @@ import customException.InvalidResultException;
 import customException.MonetaException;
 import customException.TotalvalueException;
 import macchinetta.Aggregato;
-import macchinetta.Moneta;
 
 public class OperazioniAggregati {
 
@@ -41,20 +40,7 @@ public class OperazioniAggregati {
                 String riga = sc.nextLine();
 
                 try {
-                    if (riga.contains("+") || !riga.contains("-")) cassa = Parser.parseAggregato(cassa, riga);
-                    else {
-                        String[] specifiche = riga.split(", ");
-
-                        int i = 0;
-                        for (String s : specifiche) {
-                            s = s.replaceAll("\\s+", " ");
-                            String[] elements = s.split(" ");
-                            if (i == 0) cassa.Remove(Moneta.moneta(Parser.parseImporto(elements[elements.length - 1])), Integer.parseInt(elements[1]));
-                            else cassa.Remove(Moneta.moneta(Parser.parseImporto(elements[elements.length - 1])), Integer.parseInt(elements[0]));
-
-                            i++;
-                        }
-                    }
+                    cassa = Parser.parseAggregato(cassa, riga);
                     System.out.println(cassa.toString());
                 }  catch (InsufficentcoinsException e) {
                     System.out.println("missing-coins");

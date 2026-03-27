@@ -36,8 +36,8 @@ public class Importo implements Comparable<Importo> {
      */
     public Importo(int unit, int cent) throws InvalidImportoException{
         if (cent > 99 || cent < 0 || unit < 0) throw new InvalidImportoException("not valid inputs");
-        this.units = unit;
-        this.cents = cent;
+        units = unit;
+        cents = cent;
     }
 
     /**
@@ -46,8 +46,9 @@ public class Importo implements Comparable<Importo> {
      * @param value è la visualizzazione in formato intero dell'{@code importo}
      */
     public Importo(int value) {
-        this.cents = value%100;
-        this.units = value/100;
+        if (value < 0) throw new IllegalArgumentException("valore inserito negativo");
+        cents = value%100;
+        units = value/100;
     }
 
     /**
@@ -118,9 +119,7 @@ public class Importo implements Comparable<Importo> {
     public Importo Mul(int operando) throws InvalidImportoException {
         int result = getTotalCents() * operando;
 
-        if(result%100 != 0) throw new InvalidImportoException("È stato inserito un moltiplicatore non valido");
-
-        return new Importo(result);
+        return new Importo(result/100, result%100);
     }
 
     /**

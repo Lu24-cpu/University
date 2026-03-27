@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import customException.EmptyRailException;
 import customException.InsufficentChangeException;
 import customException.InsufficentValueException;
+import customException.InsufficentcoinsException;
 import customException.InvalidImportoException;
 import customException.InvalidResultException;
 import customException.MonetaException;
 import customException.SlotException;
 import customException.TagliaException;
+import customException.TotalvalueException;
 import macchinetta.Aggregato;
 import macchinetta.Binario;
 import macchinetta.DistributoreAutomatico;
@@ -112,20 +114,19 @@ public class Parser {
      * @throws InvalidResultException se il risultato dell'operazione non è valido
      * @throws MonetaException se la moneta inserita non è valida
      */
-    public static Aggregato parseAggregato(Aggregato cassa, String input) throws InvalidImportoException, InvalidResultException, MonetaException {
+    public static Aggregato parseAggregato(Aggregato cassa, String input) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException, MonetaException {
         input = input.replaceAll("\\s+", " ");
         String[] specifiche = input.split(", ");
         String[] first = specifiche[0].split(" ");
 
-    
-        if (first[0].equals("+"))
-            cassa.Insert(Moneta.moneta(parseImporto(first[first.length - 1])), Integer.parseInt(first[1]));
-        else
-            cassa.Insert(Moneta.moneta(parseImporto(first[first.length - 1])), Integer.parseInt(first[0]));
+        if (first[0].equals("+")) cassa.Insert(Moneta.moneta(parseImporto(first[first.length - 1])), Integer.parseInt(first[1]));
+        else if (first[0].equals("-")) cassa.Remove(Moneta.moneta(parseImporto(first[first.length - 1])), Integer.parseInt(first[1]));
+        else cassa.Insert(Moneta.moneta(parseImporto(first[first.length - 1])), Integer.parseInt(first[0]));
 
         for (int i = 1; i < specifiche.length; i++) {
             String[] single = specifiche[i].split(" ");
-            cassa.Insert(Moneta.moneta(parseImporto(single[2])), Integer.parseInt(single[0]));
+            if (first[0].equals("+") && !first[0].equals("-")) cassa.Insert(Moneta.moneta(parseImporto(single[2])), Integer.parseInt(single[0]));
+            else cassa.Remove(Moneta.moneta(parseImporto(single[2])), Integer.parseInt(single[0]));
         }
 
         return cassa;

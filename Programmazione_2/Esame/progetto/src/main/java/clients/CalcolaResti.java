@@ -25,9 +25,11 @@ import java.util.Scanner;
 
 import customException.InsufficentChangeException;
 import customException.InsufficentValueException;
+import customException.InsufficentcoinsException;
 import customException.InvalidImportoException;
 import customException.InvalidResultException;
 import customException.MonetaException;
+import customException.TotalvalueException;
 import macchinetta.Aggregato;
 import macchinetta.Importo;
 import macchinetta.RestoAlto;
@@ -68,9 +70,9 @@ public class CalcolaResti {
                         cassa = Parser.parseAggregato(cassa, riga);
                         resto = change.Resto(cassa, value);
                         System.out.println(resto);
-                    } catch (InsufficentChangeException e) {
+                    } catch (InsufficentChangeException | InsufficentcoinsException e) {
                         System.out.println("change-not-possible");
-                    } catch (InsufficentValueException e) {
+                    } catch (InsufficentValueException | TotalvalueException e) {
                         System.out.println("insufficient-value");
                     } catch (InvalidImportoException | InvalidResultException | MonetaException e) {
                         System.out.println(e.getMessage());

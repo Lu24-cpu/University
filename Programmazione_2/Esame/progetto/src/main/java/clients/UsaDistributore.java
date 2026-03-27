@@ -27,11 +27,13 @@ import java.util.Scanner;
 import customException.EmptyRailException;
 import customException.InsufficentChangeException;
 import customException.InsufficentValueException;
+import customException.InsufficentcoinsException;
 import customException.InvalidImportoException;
 import customException.InvalidResultException;
 import customException.MonetaException;
 import customException.SlotException;
 import customException.TagliaException;
+import customException.TotalvalueException;
 import macchinetta.Aggregato;
 import macchinetta.Binario;
 import macchinetta.DistributoreAutomatico;
@@ -51,8 +53,8 @@ public class UsaDistributore {
                 String line = sc.nextLine().trim();
                 
                 if (line.equals(".")) break;
-                try { cassa = Parser.parseAggregato(cassa, line); } 
-                catch (InvalidImportoException | InvalidResultException | MonetaException e) { System.out.println(e.getMessage()); }
+                try { cassa = Parser.parseAggregato(cassa, line); }
+                catch (InvalidImportoException | InsufficentcoinsException | TotalvalueException | InvalidResultException | MonetaException e) { System.out.println(e.getMessage()); }
             }
 
             StrategiaResto strategy = Parser.parseStrategia(sc.nextLine());
