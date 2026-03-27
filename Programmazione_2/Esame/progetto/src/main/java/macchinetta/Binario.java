@@ -1,6 +1,8 @@
 package macchinetta;
 
-import customException.*;
+import customException.CapacityException;
+import customException.InvalidItemException;
+import customException.TagliaException;
 
 /**
  * {@code Binario} è la classe che rappresenta un binario di un {@code distibutore automatico}.

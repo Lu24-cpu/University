@@ -1,10 +1,12 @@
 package macchinetta;
 
-import customException.*;
-
 import java.util.Map;
 
 import clients.Parser;
+import customException.InsufficentChangeException;
+import customException.InsufficentValueException;
+import customException.InvalidImportoException;
+import customException.InvalidResultException;
 
 /**
  * {@code Change} è una classe astratta che implementa l'interfaccia del resto ({@code StrategiaResto})

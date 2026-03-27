@@ -23,8 +23,13 @@ package clients;
 
 import java.util.Scanner;
 
-import customException.*;
-import macchinetta.*;
+import customException.InsufficentcoinsException;
+import customException.InvalidImportoException;
+import customException.InvalidResultException;
+import customException.MonetaException;
+import customException.TotalvalueException;
+import macchinetta.Aggregato;
+import macchinetta.Moneta;
 
 public class OperazioniAggregati {
 

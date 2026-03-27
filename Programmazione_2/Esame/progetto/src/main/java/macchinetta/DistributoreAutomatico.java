@@ -3,7 +3,15 @@ package macchinetta;
 
 import java.util.List;
 
-import customException.*;
+import customException.CapacityException;
+import customException.EmptyRailException;
+import customException.InsufficentChangeException;
+import customException.InsufficentValueException;
+import customException.InvalidImportoException;
+import customException.InvalidItemException;
+import customException.InvalidResultException;
+import customException.SlotException;
+import customException.TagliaException;
 
 /**
  * {@code DistributoreAutomatico} è la classe che gestisce tutte le possibili funzioni di un effettivo distributore automatico

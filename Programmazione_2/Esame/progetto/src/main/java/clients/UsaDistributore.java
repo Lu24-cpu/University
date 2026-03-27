@@ -24,8 +24,18 @@ package clients;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import customException.*;
-import macchinetta.*;
+import customException.EmptyRailException;
+import customException.InsufficentChangeException;
+import customException.InsufficentValueException;
+import customException.InvalidImportoException;
+import customException.InvalidResultException;
+import customException.MonetaException;
+import customException.SlotException;
+import customException.TagliaException;
+import macchinetta.Aggregato;
+import macchinetta.Binario;
+import macchinetta.DistributoreAutomatico;
+import macchinetta.StrategiaResto;
 
 public class UsaDistributore {
 

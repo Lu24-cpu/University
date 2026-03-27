@@ -23,8 +23,18 @@ package clients;
 
 import java.util.Scanner;
 
-import customException.*;
-import macchinetta.*;
+import customException.InsufficentChangeException;
+import customException.InsufficentValueException;
+import customException.InvalidImportoException;
+import customException.InvalidResultException;
+import customException.MonetaException;
+import macchinetta.Aggregato;
+import macchinetta.Importo;
+import macchinetta.RestoAlto;
+import macchinetta.RestoBasso;
+import macchinetta.RestoMedio;
+import macchinetta.StrategiaResto;
+
 
 public class CalcolaResti {
 

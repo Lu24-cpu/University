@@ -2,8 +2,12 @@ package macchinetta;
 
 import java.util.Map;
 
-import customException.*;
 import clients.Parser;
+import customException.InsufficentChangeException;
+import customException.InsufficentValueException;
+import customException.InvalidImportoException;
+import customException.InvalidResultException;
+import customException.MonetaException;
 
 /**
  * {@code RestoMedio} permette la gestione del calcolo di un {@code aggregato} per il resto 

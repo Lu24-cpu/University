@@ -3,8 +3,25 @@ package clients;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import customException.*;
-import macchinetta.*;
+import customException.EmptyRailException;
+import customException.InsufficentChangeException;
+import customException.InsufficentValueException;
+import customException.InvalidImportoException;
+import customException.InvalidResultException;
+import customException.MonetaException;
+import customException.SlotException;
+import customException.TagliaException;
+import macchinetta.Aggregato;
+import macchinetta.Binario;
+import macchinetta.DistributoreAutomatico;
+import macchinetta.Importo;
+import macchinetta.Moneta;
+import macchinetta.Prodotto;
+import macchinetta.RestoAlto;
+import macchinetta.RestoBasso;
+import macchinetta.RestoMedio;
+import macchinetta.StrategiaResto;
+import macchinetta.Taglia;
 
 /**
  * Questa classe, chiamata {@code Parser}, viene usata per convertire stringhe in oggetti del tipo:

@@ -2,7 +2,11 @@ package macchinetta;
 
 import java.util.Map;
 import java.util.TreeMap;
-import customException.*;
+
+import customException.InsufficentcoinsException;
+import customException.InvalidImportoException;
+import customException.InvalidResultException;
+import customException.TotalvalueException;
 
 /**
  * {@code Aggregato} è la rappresentazione di un portafoglio o una cassa con delle {@code monete} al suo interno.

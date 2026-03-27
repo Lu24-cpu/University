@@ -23,7 +23,8 @@ package clients;
 
 import java.util.Scanner;
 
-import customException.*;
+import customException.InvalidImportoException;
+import customException.InvalidResultException;
 import macchinetta.Importo;
 
 public class OperazioniImporti {

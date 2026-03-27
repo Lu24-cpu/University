@@ -1,6 +1,9 @@
 package macchinetta;
 
-import customException.*;
+import customException.InsufficentChangeException;
+import customException.InsufficentValueException;
+import customException.InvalidImportoException;
+import customException.InvalidResultException;
 
 /**
  * {@code StrategiaResto} è un intergaffia che rappresenta il contratto per la gestione dei resti di un {@code distributore automatico}

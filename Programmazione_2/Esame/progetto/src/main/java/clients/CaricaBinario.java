@@ -23,8 +23,12 @@ package clients;
 
 import java.util.Scanner;
 
-import customException.*;
-import macchinetta.*;
+import customException.CapacityException;
+import customException.InvalidImportoException;
+import customException.InvalidItemException;
+import customException.TagliaException;
+import macchinetta.Binario;
+import macchinetta.Prodotto;
 
 public class CaricaBinario {
 
