@@ -1,0 +1,147 @@
+-- query ricorsive
+-- es:
+with recursive t(n) as (
+	select 1 -- ritorna il passo iniziale (semplicemente 1)
+	union
+	select n+1
+	from t
+	where n < 100
+)
+
+select n from t;
+
+create table imdb.genre_taxonomy (
+	genre_name varchar primary key,
+	genre_parent varchar
+)
+
+-- Thriller
+	-- Splatter (sottoclasse di Thriller)
+	-- Noir (sottoclasse di Thriller)
+		-- Poliziesco (sottoclasse di Noir)
+			-- Spionaggio (sottoclasse di Poliziesco)
+			-- Cronaca nera (sottoclasse di Poliziesco)
+
+-- genre_parent è una chiave esterna che si devere riferire ad una chiave che esiste, ma nella stessa tabella (in particolare a genre_name)
+genre_taxonomy(genre_name, genre_parent)
+
+create table imdb.genre_taxonomy (
+	genre_name varchar primary key,
+	genre_parent varchar references genre_taxonomy.genre_name -- comando non possibile perchè si cerca di referenziare su qualcosa di ancora non esistente
+)
+
+-- si deve fare così, crei la tabella senza riferimento e poi modifichi l'attributo che dovrebbe essere chiave esterna
+create table imdb.genre_taxonomy (
+	genre_name varchar primary key,
+	genre_parent varchar
+);
+alter table imdb.genre_taxonomy add constraint "fx_genre_tax" foreign key (genre_parent) references genre_taxonomy(genre_name);
+
+insert into imdb.genre_taxonomy (genre_name, genre_parent) values -- inserimento valori in una tabella
+('Thriller', NULL),
+('Splatter', 'Thriller'),
+('Noir', 'Thriller'),
+('Poliziesco', 'Noir'),
+('Spionaggio', 'Poliziesco'),
+('Cronaca nera', 'Poliziesco');
+
+-- esercizio: dato il genere cronaca nera voglio restituire tutti i genre_parent (Cronaca nera -> Polizziesco -> Noir -> Thriller) nella tassonomia
+-- atteso:
+genre1 			||		genre2
+=================================
+Cronaca nera		Poliziesco 
+Cronaca nera		Noir
+Cronaca nera		Thriller
+
+-- Soluzione mia:
+with recursive get_parent(genre1, genre2, genre3) as (
+	select genre_name, genre_parent, genre_name
+	from imdb.genre_taxonomy
+	where genre_name = 'Cronaca nera'
+	union
+	select gp.genre1, gt.genre_name, gt.genre_parent 
+	from get_parent gp inner join imdb.genre_taxonomy gt on gp.genre3 = gt.genre_name
+	where gt.genre_parent is not null
+)
+select genre1, genre2
+from get_parent;
+
+-- Soluzione prof
+with recursive get_parent(genre1, genre2) as (
+	select *
+	from imdb.genre_taxonomy
+	where genre_name = 'Cronaca nera'
+	union
+	select gp.genre1, gt.genre_parent
+	from get_parent gp inner join imdb.genre_taxonomy gt on gp.genre2 = gt.genre_name
+	where gt.genre_parent is not null
+)
+select *
+from get_parent;
+
+-- Soluzione con distanza
+-- atteso:
+genre1 			||		genre2		|| Distanza
+================================================
+Cronaca nera		Poliziesco 			  1
+Cronaca nera		Noir				  2
+Cronaca nera		Thriller			  3
+
+with recursive get_parent(genre1, genre2, distance) as (
+	select *, 1
+	from imdb.genre_taxonomy
+	where genre_name = 'Cronaca nera'
+	union
+	select gp.genre1, gt.genre_parent, distance + 1
+	from get_parent gp inner join imdb.genre_taxonomy gt on gp.genre2 = gt.genre_name
+	where gt.genre_parent is not null
+)
+select *
+from get_parent;
+
+-- dato il genere Thriller trovare tutte le sottoclassi
+with recursive get_children (genre1, genre2, distance) as (
+	select genre_parent, genre_name, 1
+	from imdb.genre_taxonomy
+	where genre_parent = 'Thriller'
+	union
+	select gc.genre1, gt.genre_parent, distance + 1
+	from get_children gc inner join imdb.genre_taxonomy gt on gc.genre2 = gt.genre_name
+)
+select *
+from get_children;
+
+-- Trovare i film simili a Inseption a distanza minore di 3
+select * from imdb.movie where official_title = 'Inception';
+-- id Inception: 1375666
+select * from imdb.sim where movie1 = '1375666' and score > 0.4 and movie1 <> movie2;
+
+with recursive search_sim (movie1, movie2, distance) as (
+	select movie1, movie2, 1
+	from imdb.sim
+	where movie1 = '1375666' and score > 0.4 and movie1 <> movie2
+	union
+	select ss.movie1, si.movie2, distance+1
+	from search_sim ss inner join imdb.sim si on ss.movie2 = si.movie1
+	where score > 0.4 and si.movie1 <> si.movie2 and ss.movie1 <> si.movie2 and distance < 2
+)
+select *
+from search_sim;
+
+-- aggiunta lo score al risultato
+with recursive search_sim (movie1, movie2, distance, score) as (
+	select movie1, movie2, 1, score
+	from imdb.sim
+	where movie1 = '1375666' and score > 0.4 and movie1 <> movie2
+	union
+	select ss.movie1, si.movie2, distance+1, ss.score * si.score
+	from search_sim ss inner join imdb.sim si on ss.movie2 = si.movie1
+	where si.score > 0.4 and si.movie1 <> si.movie2 and ss.movie1 <> si.movie2 and distance < 2
+)
+select m1.id, m1.official_title, m2.id, m2.official_title, ss.distance, ss.score
+from search_sim ss inner join imdb.movie m1 on ss.movie1 = m1.id inner join imdb.movie m2 on ss.movie2 = m2.id 
+order by score desc, m1.id;
+
+-- come escludere le stesse pellicole a distanze diverse?
+
+
