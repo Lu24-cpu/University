@@ -1,9 +1,11 @@
 package macchinetta;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * {@code RestoAlto} è una classe che estende quella di change e gestisce il resto partendo dalle {@code moneta} con valore più alto a quella più bassa 
+ * {@code RestoAlto} è una classe che estende quella di change e gestisce il resto partendo dalle {@link Moneta} con valore più alto a quella più bassa 
  */
 public class RestoAlto extends Change {
 
@@ -14,8 +16,10 @@ public class RestoAlto extends Change {
     public RestoAlto() {}
 
     @Override
-    public Map<Moneta, Integer> getOrder(Aggregato cassa) {  
-        return cassa.getAggregato().descendingMap(); 
+    public List<Moneta> getOrder() {
+        ArrayList<Moneta> values = new ArrayList<Moneta>(List.of(Moneta.values()));
+        Collections.reverse(values);
+        return values;
     }
     
 }

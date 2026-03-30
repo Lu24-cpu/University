@@ -3,7 +3,7 @@ package macchinetta;
 import customException.MonetaException;
 
 /**
- * {@code Moneta} è una classe enum che rappresenta tutte le monete possibili in formato {@link Importo}
+ * {@code Moneta} è una classe enum che rappresenta tutte le monete possibili in formato {@code Importo}
  */
 public enum Moneta {
     

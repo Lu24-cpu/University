@@ -43,10 +43,10 @@ public class Aggregato {
      *
      * @param coin è la {@code moneta} che va inserita nell'{@code aggregato}
      * @param quantity è la quantità della {@code moneta} inserita
-     * @throws InsufficentcoinsException se la quantità di monete è negativa
+     * @throws InvalidResultException se il risultato della somma tra il vecchio importo e la moneta con la quantità inserita è negativo
      */
-    public void Insert(Moneta coin, int quantity) throws InsufficentcoinsException {
-        if (quantity < 0) throw new InsufficentcoinsException("quantità negativa");
+    public void Insert(Moneta coin, int quantity) throws InvalidResultException {
+        if (quantity < 0) throw new InvalidResultException("quantità negativa");
         aggregato.put(coin, quantity+aggregato.getOrDefault(coin, 0));
     }
 
@@ -55,18 +55,16 @@ public class Aggregato {
      * In questo caso viene passato in input un altro {@code aggregato} e viene inserito in quello corrente
      *
      * @param change è l'{@code aggregato} da reinserire in quello corrente
-     * @throws InsufficentcoinsException se la quantità di monete è negativa
+     * @throws InvalidResultException se il risultato dell'importo è negativo.
      */
-    public void Insert(Aggregato change) throws InsufficentcoinsException {
-        Moneta[] values = Moneta.values();
-        
-        for (Moneta value : values) {
-            Insert(value, getQuantity(value));
+    public void Insert(Aggregato change) throws InvalidResultException {
+        for (Map.Entry<Moneta, Integer> value : change.getAggregato().entrySet()) {
+            Insert(value.getKey(), value.getValue());
         }
     }
 
     /**
-     * {@code Remove} è il metodo che permette di rimuovere una quantità specificata di moneta dall'{@code aggregato}
+     * {@code Remuve} è il metodo che permette di rimuovere una quantità specificata di moneta dall'{@code aggregato}
      * 
      * @param coin è la moneta presa in considerazione
      * @param quantity è la quantità che si vuole togliede dall'aggregato
@@ -94,34 +92,32 @@ public class Aggregato {
      * @throws InvalidResultException se il risultato del calcolo dell'{@code importo} risulta negativa
      */
     public void Remove(Aggregato change) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException {
-        Moneta[] values = Moneta.values();
         Aggregato copia = new Aggregato();
         
         copia.Insert(this);
 
-        for (Moneta value : values) {
-            copia.Remove(value, getQuantity(value));
+        for (Map.Entry<Moneta, Integer> value : change.getAggregato().entrySet()) {
+            copia.Remove(value.getKey(), value.getValue());
         }
 
-        this.Empty();
+        this.Svuota();
         this.Insert(copia);
     }
 
     /**
      * {@code Svuota} è un metodo che svuota completamente un aggregato
      */
-    public void Empty() {
+    public void Svuota() {
         aggregato.clear();
     }
 
     /**
-     * {@code getAggregato} restituisce la quantità di una {@code moneta} indicata
+     * {@code getAggregato} restituisce la rappresentazione dell'{@code aggregato} in formato di TreeMap
      *
-     * @param coin è la {@code moneta} di cui si vuole sapere la quantità
-     * @return è la quantità di una {@code moneta} indicata
+     * @return è la TreeMap rappresentate l'{@code aggregato}
      */
-    public int getQuantity(Moneta coin){
-        return aggregato.get(coin);
+    public TreeMap<Moneta, Integer> getAggregato(){
+        return aggregato;
     }
 
     /**

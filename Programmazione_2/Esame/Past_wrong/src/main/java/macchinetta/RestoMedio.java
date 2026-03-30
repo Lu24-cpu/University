@@ -22,11 +22,7 @@ public class RestoMedio implements StrategiaResto{
     @Override
     public Aggregato Resto(Aggregato cassa, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidImportoException, InvalidResultException {
         Aggregato copy = new Aggregato();
-        try {
-            copy.Insert(cassa);
-        } catch (InsufficentcoinsException e) {
-            throw new InsufficentValueException("quantità insufficente di monete");
-        }
+        copy.Insert(cassa);
 
         if (resto.compareTo(cassa.getTotalImporto())>0) throw new InsufficentValueException("quantità insufficente di monete");
 

@@ -7,13 +7,11 @@ import customException.CapacityException;
 import customException.EmptyRailException;
 import customException.InsufficentChangeException;
 import customException.InsufficentValueException;
-import customException.InsufficentcoinsException;
 import customException.InvalidImportoException;
 import customException.InvalidItemException;
 import customException.InvalidResultException;
 import customException.SlotException;
 import customException.TagliaException;
-import customException.TotalvalueException;
 
 /**
  * {@code DistributoreAutomatico} è la classe che gestisce tutte le possibili funzioni di un effettivo distributore automatico
@@ -109,15 +107,12 @@ public class DistributoreAutomatico {
     }
 
     /**
-     * {@code ModifyAggregato} modifica la cassa del {@code distributore}
+     * {@code getAggregato} ritorna l'{@code aggregato} di cassa del {@code distributore}
      * 
-     * @param coin è la moneta da modificare
-     * @param quantity è la quantità da inserire o rimuovere
-     * @throws InsufficentcoinsException
+     * @return l'{@code aggregato} della cassa
      */
-    public void ModifyAggregato(Moneta coin, int quantity, char type) throws InsufficentcoinsException, TotalvalueException, InvalidImportoException, InvalidResultException {
-        if(type == '+') cashier.Insert(coin, quantity);
-        else cashier.Remove(coin, quantity);
+    public Aggregato getAggregato() {
+        return cashier;
     }
 
     @Override

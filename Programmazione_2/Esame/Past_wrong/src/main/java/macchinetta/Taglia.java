@@ -3,7 +3,7 @@ package macchinetta;
 import customException.TagliaException;
 
 /**
- * {@code Taglia} è una classe enum che rappresenta le taglie possibili di un {@link Prodotto} o {@link Binario}
+ * {@code Taglia} è una classe enum che rappresenta le taglie possibili di un {@code Prodotto} o {@code Binario}
  */
 public enum Taglia {
 

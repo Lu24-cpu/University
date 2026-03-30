@@ -213,7 +213,7 @@ public class Parser {
 
                 try {
                     importo = importo.Add(Parser.parseImporto(Float.toString((float) (multiplier * converted) / 100)));
-                    macchinetta.ModifyAggregato(Moneta.moneta(Parser.parseImporto(parts[2])), Integer.parseInt(parts[0]), '+');
+                    macchinetta.getAggregato().Insert(Moneta.moneta(Parser.parseImporto(parts[2])), Integer.parseInt(parts[0]));
                 } catch (InvalidResultException | InvalidImportoException | MonetaException e) {
                     System.out.println(e.getMessage());
                 }

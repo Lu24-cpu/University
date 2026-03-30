@@ -1,9 +1,10 @@
 package macchinetta;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * {@code RestoBasso} è la classe che implementa la strategia del resto che predilige l'uso delle monete di piccolo taglio per calcolare il resto
+ * {@code RestoBasso} è la classe che implementa la strategia del resto che predilige l'uso delle {@link Moneta} di piccolo taglio per calcolare il resto
  */
 public class RestoBasso extends Change {
 
@@ -14,8 +15,8 @@ public class RestoBasso extends Change {
     public RestoBasso() {}
 
     @Override
-    public Map<Moneta, Integer> getOrder(Aggregato cassa) {
-        return cassa.getAggregato();
+    public List<Moneta> getOrder() {
+        return new ArrayList<Moneta>(List.of(Moneta.values()));
     }
 
 }
