@@ -63,11 +63,16 @@ public class CalcolaResti {
                     }
 
                     Aggregato cassa = new Aggregato();
-                    Aggregato resto = new Aggregato();
-                    String riga = sc.nextLine().replaceAll("\\; ", ", ");
+                    Aggregato resto;
+                    String riga = sc.nextLine().replaceAll("\\, ", ", ");
                     
                     try {
-                        cassa = Parser.parseAggregato(cassa, riga);
+                        riga = riga.replaceAll("\\s+", " ");
+                        String[] input = riga.split("; ");
+                        input[0] = input[0].replaceAll("\\+ ", "");
+                        
+                        cassa.Insert(Parser.parseAggregato(new Aggregato(), input));
+
                         resto = change.Resto(cassa, value);
                         System.out.println(resto);
                     } catch (InsufficentChangeException | InsufficentcoinsException e) {

@@ -114,19 +114,10 @@ public class Parser {
      * @throws InvalidResultException se il risultato dell'operazione non è valido
      * @throws MonetaException se la moneta inserita non è valida
      */
-    public static Aggregato parseAggregato(Aggregato cassa, String input) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException, MonetaException {
-        input = input.replaceAll("\\s+", " ");
-        String[] specifiche = input.split(", ");
-        String[] first = specifiche[0].split(" ");
-
-        if (first[0].equals("+")) cassa.Insert(Moneta.moneta(parseImporto(first[first.length - 1])), Integer.parseInt(first[1]));
-        else if (first[0].equals("-")) cassa.Remove(Moneta.moneta(parseImporto(first[first.length - 1])), Integer.parseInt(first[1]));
-        else cassa.Insert(Moneta.moneta(parseImporto(first[first.length - 1])), Integer.parseInt(first[0]));
-
-        for (int i = 1; i < specifiche.length; i++) {
-            String[] single = specifiche[i].split(" ");
-            if (first[0].equals("+") && !first[0].equals("-")) cassa.Insert(Moneta.moneta(parseImporto(single[2])), Integer.parseInt(single[0]));
-            else cassa.Remove(Moneta.moneta(parseImporto(single[2])), Integer.parseInt(single[0]));
+    public static Aggregato parseAggregato(Aggregato cassa, String[] input) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException, MonetaException {
+        for (int i = 0; i < input.length; i++) {
+            String[] single = input[i].split(" ");
+            cassa.Insert(Moneta.moneta(parseImporto(single[2])), Integer.parseInt(single[0]));
         }
 
         return cassa;
@@ -195,11 +186,12 @@ public class Parser {
      * @throws SlotException se è stato selezionato uno slot non disponibile
      */
     public static String parseDistributore(DistributoreAutomatico macchinetta, String input) throws EmptyRailException, InsufficentChangeException, InsufficentValueException, SlotException{
+        String[] elements = input.split(" ! ");
+        String[] specifiche = elements[1].split(";");
+        StringBuilder prodotto = new StringBuilder();
+        String[] q = elements[0].split(" ");
+
         if (input.contains("+")) {
-            String[] elements = input.split(" ! ");
-            String[] specifiche = elements[1].split(";");
-            StringBuilder prodotto = new StringBuilder();
-            String[] q = elements[0].split(" ");
             int quantity = Integer.parseInt(q[1]);
 
             prodotto.append(specifiche[0]).append("|").append(specifiche[1]).append("|").append(specifiche[2]);
@@ -209,15 +201,12 @@ public class Parser {
             } catch (TagliaException | InvalidImportoException e) {
                 System.out.println(e.getMessage());
             }
-        } else if (input.equals("?")) return macchinetta.toString();
-        else {
-            String[] elements = input.split(" ! ");
-            String[] parti = elements[1].split("; ");
-            String[] railnumber = elements[0].split(" ");
-            int rail = Integer.parseInt(railnumber[1]);
+        } else {
+            int rail = Integer.parseInt(q[1]);
             Importo importo = new Importo(0);
 
-            for (String parte : parti) {
+            for (String parte : specifiche) {
+                parte = parte.trim();
                 String[] parts = parte.split(" * ");
                 int converted = (new BigDecimal(parts[2])).multiply(BigDecimal.valueOf(100)).intValueExact();
                 int multiplier = Integer.parseInt(parts[0]);

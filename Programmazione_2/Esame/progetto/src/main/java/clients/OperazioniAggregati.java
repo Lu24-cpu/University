@@ -40,7 +40,16 @@ public class OperazioniAggregati {
                 String riga = sc.nextLine();
 
                 try {
-                    cassa = Parser.parseAggregato(cassa, riga);
+                    riga = riga.replaceAll("\\s+", " ");
+                    String[] input = riga.split(", ");
+
+                    if (input[0].contains("+")) {
+                        input[0] = input[0].replaceAll("\\+ ", "");
+                        cassa.Insert(Parser.parseAggregato(new Aggregato(), input));
+                    } else {
+                        input[0] = input[0].replaceAll("\\- ", "");
+                        cassa.Remove(Parser.parseAggregato(new Aggregato(), input));
+                    }
                     System.out.println(cassa.toString());
                 }  catch (InsufficentcoinsException e) {
                     System.out.println("missing-coins");

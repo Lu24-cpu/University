@@ -58,19 +58,18 @@ public class DistributoreAutomatico {
      * @throws SlotException se nel binario scelto non può essere caricato tale prodotto
      */
     public int caricaBinario(Prodotto product, int quantity) throws SlotException {
-        for (Binario rail : this.rails) {
+        for (Binario rail : rails) {
             try {
                 int finale = rail.getCapacity() - rail.getQuantity();
 
                 if(quantity <= finale) {
                     rail.uploadRail(product, quantity);
                     quantity = 0;
-                }
-                else {
-                    rail.uploadRail(product, quantity-finale);
+                    break;
+                } else {
+                    rail.uploadRail(product, finale);
                     quantity -= finale;
                 }
-                break;
             } catch (CapacityException | InvalidItemException | TagliaException e) {}
         }
         
@@ -92,7 +91,7 @@ public class DistributoreAutomatico {
     public Aggregato scaricaBinario(int rail, Importo importo) throws SlotException, EmptyRailException, InsufficentChangeException, InsufficentValueException {
         if (rail > this.rails.size()) throw new SlotException("Il binario non esiste");
         if (this.rails.get(rail).getProduct() == null || this.rails.get(rail).getQuantity() == 0) throw new EmptyRailException("Il Binario è vuoto");
-
+        //Riprendere da qui
         try {
             Prodotto prodotto = this.rails.get(rail).getProduct();
             Importo resto = importo.Sub(prodotto.value());

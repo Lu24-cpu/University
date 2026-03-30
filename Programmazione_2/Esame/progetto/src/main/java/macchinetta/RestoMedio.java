@@ -29,6 +29,17 @@ public class RestoMedio implements StrategiaResto{
         return calcolo(copy, resto);
     }
 
+    /**
+     * {@code calcolo} è una classe privata che fa il calcolo dell'{@code aggregato} del resto da dare all'utente
+     * 
+     * @param copia è una copia dell'{@code agrgegato} di cassa
+     * @param resto è l'{@code importo} da dare all'utente
+     * @return l'{@code aggregato} del resto per l'utente
+     * @throws InsufficentChangeException se non è stato possibile dare il resto con le monete adeguate
+     * @throws InsufficentValueException se l'{@code importo} totale della cassa è minore del resto da dare
+     * @throws InvalidImportoException se l'{@code importo} calcolato non è valido
+     * @throws InvalidResultException se l'{@code importo} calcolato è negativo
+     */
     private Aggregato calcolo(Aggregato copia, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidImportoException, InvalidResultException {
         Aggregato change = new Aggregato();
         Moneta[] tagli = Moneta.values();

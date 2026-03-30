@@ -49,21 +49,38 @@ public class UsaDistributore {
             try { rails = Parser.parseBinari(sc.nextLine()); }
             catch (TagliaException e) { System.out.println(e.getMessage()); }
 
-            while (sc.hasNextLine()) {
-                String line = sc.nextLine().trim();
-                
-                if (line.equals(".")) break;
-                try { cassa = Parser.parseAggregato(cassa, line); }
-                catch (InvalidImportoException | InsufficentcoinsException | TotalvalueException | InvalidResultException | MonetaException e) { System.out.println(e.getMessage()); }
-            }
+            try {
+                StringBuilder inputs = new StringBuilder();
 
+                while (sc.hasNext()) {
+                    String line = sc.nextLine().trim();
+
+                    if (line.equals(".")) break;
+                    line = line.replaceAll("\\s+", " ");
+                    String[] input = line.split(" ");
+
+                    line = String.join(" x ", input);
+                    inputs.append(line).append(", ");
+                }
+                if (inputs.length()>2) {
+                    inputs.setLength(inputs.length() - 2);
+                }
+
+                String[] input = inputs.toString().split(", ");
+
+                cassa.Insert(Parser.parseAggregato(new Aggregato(), input));
+            } catch (InvalidImportoException | InsufficentcoinsException | TotalvalueException | InvalidResultException | MonetaException e) {
+                System.out.println(e.getMessage());
+            }
+            
             StrategiaResto strategy = Parser.parseStrategia(sc.nextLine());
             DistributoreAutomatico macchinetta = new DistributoreAutomatico(cassa, strategy, rails);
 
             while (sc.hasNext()) {
                 String line = sc.nextLine().trim();
                 try {
-                    System.out.println(Parser.parseDistributore(macchinetta, line));
+                    if (line.equals("?")) System.out.println(macchinetta);
+                    else System.out.println(Parser.parseDistributore(macchinetta, line));
                 }  catch (EmptyRailException e) {
                     System.out.println("- empty");
                 } catch (InsufficentChangeException e) {

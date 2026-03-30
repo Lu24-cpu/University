@@ -168,9 +168,9 @@ public class Importo implements Comparable<Importo> {
      */
     @Override
     public int compareTo(Importo value) {
-        if(units < value.units || (units == value.units && cents < value.cents)) return -1;
-        else if (units > value.units || (units == value.units && cents > value.cents)) return 1;
-        else return 0;
+        int value1 = getTotalCents(), value2 = value.getTotalCents();
+
+        return Integer.compare(value1, value2);
     }
 
     @Override

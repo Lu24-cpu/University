@@ -9,7 +9,7 @@ import customException.InvalidResultException;
 import customException.TotalvalueException;
 
 /**
- * {@code Aggregato} è la rappresentazione di un portafoglio o una cassa con delle {@code monete} al suo interno.
+ * {@code Aggregato} è la rappresentazione di un portafoglio o una cassa con delle {@link Moneta} al suo interno.
  */
 public class Aggregato {
 
@@ -74,11 +74,9 @@ public class Aggregato {
      * @throws InvalidResultException se il risultato del calcolo dell'{@code importo} risulta negativa
      */
     public void Remove(Moneta coin, int quantity) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException {
-        if (aggregato.getOrDefault(coin, 0) - quantity < 0) throw new InsufficentcoinsException("quantità di monete insufficente");
-        if(aggregato.containsKey(coin) && aggregato.get(coin) > quantity) {
+        if(aggregato.containsKey(coin) && aggregato.get(coin) >= quantity) {
             aggregato.put(coin, aggregato.get(coin)-quantity);
-        }
-        else {
+        } else {
             if (getTotalImporto().getTotalCents() < quantity * coin.getValue().getTotalCents()) throw new TotalvalueException("Valore complessivo non sufficente");
             throw new InsufficentcoinsException("Quantità di moneta insufficente");
         }
@@ -96,17 +94,21 @@ public class Aggregato {
     public void Remove(Aggregato change) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException {
         Aggregato copia = new Aggregato();
         
-        for (Map.Entry<Moneta, Integer> value : aggregato.entrySet()) {
-            copia.Insert(value.getKey(), value.getValue());
-        }
+        copia.Insert(this);
 
         for (Map.Entry<Moneta, Integer> value : change.getAggregato().entrySet()) {
             copia.Remove(value.getKey(), value.getValue());
         }
 
-        for (Map.Entry<Moneta, Integer> value : copia.getAggregato().entrySet()) {
-            aggregato.put(value.getKey(), value.getValue());
-        }
+        this.Svuota();
+        this.Insert(copia);
+    }
+
+    /**
+     * {@code Svuota} è un metodo che svuota completamente un aggregato
+     */
+    public void Svuota() {
+        aggregato.clear();
     }
 
     /**
