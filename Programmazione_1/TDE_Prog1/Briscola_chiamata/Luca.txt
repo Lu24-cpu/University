@@ -1,0 +1,10 @@
+Carte
+
+donna quadri
+
+Prese:
+
+{2 cuori}, {7 quadri}, {5 picche}, {2 quadri}, {1 fiori}, 
+
+{8 picche}, {4 fiori}, {8 fiori}, {7 fiori}, {1 picche}, 
+

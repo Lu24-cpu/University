@@ -3,17 +3,22 @@
     display: flex;
     flex-direction: row;
     background-color: #000066;
-    width: 1000px;
-    height: 900px;
+    width: 50%;
+    height: 95%;
     box-shadow: 20px 20px 5px black;
 }
 
 h3 {
+    margin-left: 5px;
     color: #ffbf00;
 }
 
 a {
     color: white;
+}
+
+p {
+    margin-left: 15px;
 }
 
 ul {
@@ -31,6 +36,14 @@ ul {
     text-align: center;
 }
 
+#loghi {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: center;
+}
+
 #loghi-img{
     width: 40px;
     height: 40px;
@@ -40,7 +53,7 @@ ul {
 }
 
 .left-column {
-    width: 25%;
+    width: 30%;
     height: 100%;
     overflow: auto;
     color: white;
@@ -49,7 +62,7 @@ ul {
 }
 
 .right-column {
-    width: 75%;
+    width: 70%;
     height: 100%;
     margin: 15px;
     color: white;

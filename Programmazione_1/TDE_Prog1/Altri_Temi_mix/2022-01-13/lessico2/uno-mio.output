@@ -1,0 +1,53 @@
++ (legge e memorizza)
+? (numeri di riga in cui è comparsa la parola data)
+m (stampa le lunghezze min e max)
+p (stampa le parole memorizzate)
+alimento il dizionario
+consulto il dizionario
+parola: ha
+righe [1]
+alimento il dizionario
+alimento il dizionario
+alimento il dizionario
+alimento il dizionario
+alimento il dizionario
+alimento il dizionario
+consulto il dizionario
+parola: ha il
+righe []
+consulto il dizionario
+parola: scarpe
+righe [6]
+consulto il dizionario
+parola: befana
+righe [1 4 5]
+lunghezza min e max
+1 12
+stampo il dizionario ordinato
+alla : [7]
+befana : [1 4 5]
+befana! : [8]
+con : [6 7]
+di : [5]
+e : [1]
+fazzoletto : [1]
+gonna : [1]
+ha : [1]
+il : [1]
+la : [1 1 4 5 8]
+le : [6 7]
+ma : [3]
+notte : [5]
+poverina : [3]
+quest'anno : [3]
+raffreddata! : [4]
+rattoppata : [1]
+rotte : [6]
+scarpe : [6]
+sottana: : [7]
+toppe : [7]
+tutte : [6]
+vien : [5]
+viva : [8]
+viva, : [8]
+è : [4]

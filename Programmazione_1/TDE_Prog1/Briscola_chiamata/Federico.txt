@@ -1,0 +1,14 @@
+Carte
+
+
+Prese:
+
+{3 fiori}, {5 cuori}, {5 picchee}, {2 picche}, {3 cuori}, 
+
+{4 quadri}, {10 picche}, {1 cuori}, {9 picche}, {1 quadri}, 
+
+{5 fiori}, {10 quadri}, {3 quadri}, {10 fiori}, {8 cuori}, 
+
+{10 cuori}, {10 picche}, {6 quadri}, {5 quadri}, {4 cuori}, 
+
+Compagno

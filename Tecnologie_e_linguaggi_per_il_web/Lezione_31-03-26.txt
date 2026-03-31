@@ -10,4 +10,4 @@ Bootstrap = framework front-end gratuito per uno sviluppo web più rapido
 	
 	-- Introduzione all'utilizzo di Bootstrap
 	
-	
+Concetto di breakpoint = dimensione in px, sopra questo valore si tiene la regola dei dodicesimi della divisione dello schermo, mentre sotto vengono incolonato

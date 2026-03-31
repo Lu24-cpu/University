@@ -1,0 +1,7 @@
+1;Gabriele;Sarti;19
+14;Grazia;Borsani;51
+10;Gualtiero;Sarti;53
+2;Giovanni;Sarti;11
+3;Gennaro;Bello;15
+5;Fabio;Pasqua;32
+18;Abate;Abete;29
