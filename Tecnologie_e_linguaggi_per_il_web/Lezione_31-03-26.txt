@@ -1,0 +1,13 @@
+Web design adattivo = una pagina web si adatta alla dimensione della pagina in cui si trova
+
+Bootstrap = framework front-end gratuito per uno sviluppo web più rapido
+	--> servizio opensource
+	--> vantaggio: essendo nel framework html, css e JavaScript è opensource ed è possibile l'override delle librerie già esistenti e importate se modifico.
+	--> come includo bootstrap? O scarico tutto bootstrap o collegamento a bootstrap e scarica il css della versione n (tendenzialmente dalla 3 ce le ha tutte)
+	--> Comandi import sulle slides pptx del prof
+	
+	Con Bootstrap avremo un framework di lavoro, avremo dei CSS pronti che potremo sovrascrivere o utilizzare dei div o delle classi per modificare lo stile della pagina di testo
+	
+	-- Introduzione all'utilizzo di Bootstrap
+	
+	
