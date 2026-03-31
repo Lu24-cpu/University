@@ -203,21 +203,9 @@ public class Parser {
             }
         } else {
             int rail = Integer.parseInt(q[1]);
-            Importo importo = new Importo(0);
+            Aggregato importo = new Aggregato();
 
-            for (String parte : specifiche) {
-                parte = parte.trim();
-                String[] parts = parte.split(" * ");
-                int converted = (new BigDecimal(parts[2])).multiply(BigDecimal.valueOf(100)).intValueExact();
-                int multiplier = Integer.parseInt(parts[0]);
-
-                try {
-                    importo = importo.Add(Parser.parseImporto(Float.toString((float) (multiplier * converted) / 100)));
-                    macchinetta.ModifyAggregato(Moneta.moneta(Parser.parseImporto(parts[2])), Integer.parseInt(parts[0]), '+');
-                } catch (InvalidResultException | InvalidImportoException | MonetaException e) {
-                    System.out.println(e.getMessage());
-                }
-            }
+            importo = Parser.parseAggregato(importo, q);
 
             return "- " + macchinetta.scaricaBinario(rail, importo);
         }

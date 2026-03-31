@@ -90,13 +90,13 @@ public class DistributoreAutomatico {
      * @throws InsufficentChangeException se non è stato possbile calcolare il {@code resto} per mancanza di {@code monete}
      * @throws InsufficentValueException se non è stato possbile calcolare il {@code resto} per {@code importo} insufficente in cassa
      */
-    public Aggregato scaricaBinario(int rail, Importo importo) throws SlotException, EmptyRailException, InsufficentChangeException, InsufficentValueException {
+    public Aggregato scaricaBinario(int rail, Aggregato importo) throws SlotException, EmptyRailException, InsufficentChangeException, InsufficentValueException {
         if (rail > this.rails.size()) throw new SlotException("Il binario non esiste");
-        if (this.rails.get(rail).getProduct() == null || this.rails.get(rail).getQuantity() == 0) throw new EmptyRailException("Il Binario è vuoto");
+        if (rails.get(rail).getProduct() == null || rails.get(rail).getQuantity() == 0) throw new EmptyRailException("Il Binario è vuoto");
         //Riprendere da qui
         try {
             Prodotto prodotto = this.rails.get(rail).getProduct();
-            Importo resto = importo.Sub(prodotto.value());
+            Importo resto = importo.getTotalImporto().Sub(prodotto.value());
             Aggregato changeAgg = strategy.Resto(cashier, resto);
             
             rails.get(rail).unloadRail(1);
