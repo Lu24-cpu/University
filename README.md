@@ -11,3 +11,6 @@ Questa cartella contiene i lavori sul corso di database
 
 ## Algoritmi TDE
 Questa cartella contiene dei pdf di vechie prove di Algoritmi e strutture dati
+
+## Tecnologie e linguaggi per il web
+Questa cartella contiene i lavori del corso di studi omonimo
