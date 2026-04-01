@@ -1,0 +1,1 @@
+DensePoly: 3x^2 + 2x + 1
