@@ -1,101 +1,207 @@
-<p!DOCTIPE html>
+<!DOCTIPE html>
 <html>
 	<head>
 		<title>Curriculum Vitae</title>
-		<link rel="stylesheet" type="text/css" href="CV.css">
 		<link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<style>
+			.container-fluid {
+				margin: auto;
+				display: flex;
+				flex-direction: row;
+				background-color: #000066;
+				width: 50%;
+				height: 95%;
+				box-shadow: 20px 20px 5px black;
+			}
+
+			h3 {
+				margin-left: 5px;
+				color: #ffbf00;
+			}
+
+			a {
+				color: white;
+			}
+
+			p {
+				margin-left: 15px;
+			}
+
+			ul {
+				list-style-type: none;
+			}
+
+			#sub-list {
+				font-size: 15px;
+			}
+
+			#skills {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-around;
+				text-align: center;
+			}
+
+			#loghi {
+				margin-left: auto;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-around;
+				text-align: center;
+			}
+
+			#loghi-img{
+				width: 40px;
+				height: 40px;
+				display: row;
+				justify-content: space-between;
+				border-radius: 50%;
+			}
+
+			.left-column {
+				width: 30%;
+				height: 100%;
+				overflow: auto;
+				color: white;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.right-column {
+				width: 70%;
+				height: 100%;
+				margin: 15px;
+				color: white;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.image {
+				width: 100%;
+				height: 40%;
+				background-color: #ffbf00;
+				object-fit: cover;
+				overflow: hidden;
+				justify-content: center;
+				text-align: center;
+				color: #000066;
+				margin: 0 auto;
+			}
+
+			img {
+				width: 80%;
+				height: 60%;
+				object-fit: cover;
+				margin-top: 10px;
+				border-radius: 50%;
+			}
+
+			.description {
+				width: 100%;
+				height: 60%;
+				margin: 0 auto;
+				background-color: #000080;
+			}
+
+			.row {
+				color: white;
+			}
+		</style>
 	</head>
 	<body>
-		<div class="container">
-			<div class="col-md-4 left-column">
-				<div class="image">
-					<img src="Fototessera.jpg">
-					<h3 style="color:000066">Luca Sanò</h3>
-					<h3 style="color:000066">Studente</h3>
-				</div>
-				<div class="description">
-					<h3>Su di me</h3>
-					<p>
-						Luca Sanò ha conseguito il diploma delle superiori indirizzo scientifico opzione scienze applicate presso i Salesiani di Milano di via Copernico.
-						Attualmente è studente di informatica alla statale di Milano (MI)
-					</p>
-					<h3>Contattami</h3>
-					<p>
-						<a href="tel:+39-334-848-0674">+39-334848-0674</a><br>
-						<a href="">Milano, Mi</a><br>
-						<a href="mailto:lu24settembre@gmail.com">lu24settembre@gmail.com</a><br>
-					</p>
-					<h3>Seguimi</h3>
-					<p id="loghi">
-						<a href=""><img id="loghi-img" src="logo-whatsapp.jpg"></a>
-						<a href=""><img id="loghi-img" src="logo-insta.jpg"></a>
-						<a href=""><img id="loghi-img" src="logo-facebook.png"></a>
-						<a href="https://github.com/Lu24-cpu"><img id="loghi-img" src="logo-github.png"></a>
-					</p>
-				</div>
-			</div>
-			<div class="col-md-8 righ-column">
-				<div class="row firsr-raw">
-					<div class="col-md-4 left">
-						<h3>Expierience</h3>
-						<ul>
-							<li>Attualmente nessuna esperienza lavorativa</li>
-							<li></li>
-							<li></li>
-						</ul>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-4 left-column">
+					<div class="image">
+						<img src="Fototessera.jpg">
+						<h3 style="color:000066">Luca Sanò</h3>
+						<h3 style="color:000066">Studente</h3>
 					</div>
-					<div class="col-md-4 right">
-						<h3>Istruzione</h3>
-						<ul>
-							<li>
-								Laurea Informatica in corso
-								<ul id="sub-list">
-									<li>Università degli studi di Milano</li>
-									<li>Sep. 2024 - Today</li>
-								</ul>
-							</li>
-							<li>
-								High School
-								<ul id="sub-list">
-									<li>Istituto Salesiano Sant'Ambrogio (MI)</li>
-									<li>Sep. 2019 - Jun 2024</li>
-								</ul>
-							</li>
-						</ul>
+					<div class="description">
+						<h3>Su di me</h3>
+						<p>
+							Luca Sanò ha conseguito il diploma delle superiori indirizzo scientifico opzione scienze applicate presso i Salesiani di Milano di via Copernico.
+							Attualmente è studente di informatica alla statale di Milano (MI)
+						</p>
+						<h3>Contattami</h3>
+						<p>
+							<a href="tel:+39-334-848-0674">+39-334848-0674</a><br>
+							<a href="">Milano, Mi</a><br>
+							<a href="mailto:lu24settembre@gmail.com">lu24settembre@gmail.com</a><br>
+						</p>
+						<h3>Seguimi</h3>
+						<p id="loghi">
+							<a href=""><img id="loghi-img" src="logo-whatsapp.jpg"></a>
+							<a href=""><img id="loghi-img" src="logo-insta.jpg"></a>
+							<a href=""><img id="loghi-img" src="logo-facebook.png"></a>
+							<a href="https://github.com/Lu24-cpu"><img id="loghi-img" src="logo-github.png"></a>
+						</p>
 					</div>
 				</div>
-				<div class="row second-raw">
-					<h3>Programming skills</h3>
-					<ul id="skills">
-						<li>C</li>
-						<li>Go</li>
-						<li>Java</li>
-						<li>HTML5</li>
-						<li>CSS3</li>
-						<li>Python</li>
-						<li>Assembly</li>
-					</ul>
-				</div>
-				<div class="row third-raw">
-					<h3>Software skills</h3>
-					<ul id="skills">
-						<li>Vs Code</li>
-						<li>CodeBlocks</li>
-						<li>Notepad++</li>
-						<li>Mars</li>
-						<li>Lightroom</li>
-						<li>Snapseed</li>
-					</ul>
-				</div>
-				<div class="row forth-raw">
-					<h3>Interessi</h3>
-					<ul id="skills">
-						<li>Informatica</li>
-						<li>Montagna</li>
-						<li>Fotografia</li>
-						<li>Videogiochi</li>
-					</ul>
+				<div class="col-md-8 righ-column">
+					<div class="row">
+						<div class="col-md-6">
+							<h3>Expierience</h3>
+							<ul>
+								<li>Attualmente nessuna esperienza lavorativa</li>
+								<li></li>
+								<li></li>
+							</ul>
+						</div>
+						<div class="col-md-6">
+							<h3>Istruzione</h3>
+							<ul>
+								<li>
+									Laurea Informatica in corso
+									<ul id="sub-list">
+										<li>Università degli studi di Milano</li>
+										<li>Sep. 2024 - Today</li>
+									</ul>
+								</li>
+								<li>
+									High School
+									<ul id="sub-list">
+										<li>Istituto Salesiano Sant'Ambrogio (MI)</li>
+										<li>Sep. 2019 - Jun 2024</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="row">
+						<h3>Programming skills</h3>
+						<ul id="skills">
+							<li>C</li>
+							<li>Go</li>
+							<li>Java</li>
+							<li>HTML5</li>
+							<li>CSS3</li>
+							<li>Python</li>
+							<li>Assembly</li>
+						</ul>
+					</div>
+					<div class="row">
+						<h3>Software skills</h3>
+						<ul id="skills">
+							<li>Vs Code</li>
+							<li>CodeBlocks</li>
+							<li>Notepad++</li>
+							<li>Mars</li>
+							<li>Lightroom</li>
+							<li>Snapseed</li>
+						</ul>
+					</div>
+					<div class="row">
+						<h3>Interessi</h3>
+						<ul id="skills">
+							<li>Informatica</li>
+							<li>Montagna</li>
+							<li>Fotografia</li>
+							<li>Videogiochi</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
