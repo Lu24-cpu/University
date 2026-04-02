@@ -16,7 +16,7 @@ public class TotalvalueException extends Exception {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Costruisce una nuova {@code InsufficentcoinsException} con un messaggio
+     * Costruisce una nuova {@code TotalvalueException} con un messaggio
      * specificato.
      *
      * @param errore messaggio che descrive la causa dell'eccezione

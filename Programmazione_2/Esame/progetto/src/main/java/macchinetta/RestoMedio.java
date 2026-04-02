@@ -1,10 +1,7 @@
 package macchinetta;
 
-import customException.InsufficentChangeException;
-import customException.InsufficentValueException;
-import customException.InsufficentcoinsException;
-import customException.InvalidImportoException;
-import customException.InvalidResultException;
+import customException.*;
+import customException.QuantityException;
 import customException.TotalvalueException;
 
 /**
@@ -20,15 +17,15 @@ public class RestoMedio implements StrategiaResto{
     public RestoMedio(){}
 
     @Override
-    public Aggregato Resto(Aggregato cassa, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidImportoException, InvalidResultException {
+    public Aggregato Resto(Aggregato cassa, Importo resto) throws TotalvalueException, InvalidResultException, InvalidImportoException {
         Aggregato copy = new Aggregato();
         try {
             copy.Insert(cassa);
-        } catch (InsufficentcoinsException e) {
-            throw new InsufficentValueException("quantità insufficente di monete");
+        } catch (QuantityException e) {
+            throw new InvalidResultException("quantità insufficente di monete");
         }
 
-        if (resto.compareTo(cassa.getTotalImporto())>0) throw new InsufficentValueException("quantità insufficente di monete");
+        if (resto.compareTo(cassa.getTotalImporto())>0) throw new InvalidResultException("quantità insufficente di monete");
 
         return calcolo(copy, resto);
     }
@@ -44,7 +41,7 @@ public class RestoMedio implements StrategiaResto{
      * @throws InvalidImportoException se l'{@code importo} calcolato non è valido
      * @throws InvalidResultException se l'{@code importo} calcolato è negativo
      */
-    private Aggregato calcolo(Aggregato copia, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidImportoException, InvalidResultException {
+    private Aggregato calcolo(Aggregato copia, Importo resto) throws TotalvalueException, InvalidResultException, InvalidImportoException {
         Aggregato change = new Aggregato();
         Moneta[] tagli = Moneta.values();
         Moneta[] reverse = Moneta.values();
@@ -73,9 +70,9 @@ public class RestoMedio implements StrategiaResto{
                 }
             }
         } catch (TotalvalueException e) {
-            throw new InsufficentValueException("importo insufficente");
-        } catch (InsufficentcoinsException e) {
-            throw new InsufficentChangeException("quantità di moneta insufficente");
+            throw new InvalidResultException("importo insufficente");
+        } catch (QuantityException e) {
+            throw new TotalvalueException("quantità di moneta insufficente");
         }
 
         return change;

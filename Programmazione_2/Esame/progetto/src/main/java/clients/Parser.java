@@ -183,6 +183,7 @@ public class Parser {
      * @throws
      */
     public static DistributoreAutomatico parseDistributore(String binari, String aggregato, String strategia) throws EmptyRailException, InsufficentChangeException, InsufficentValueException, SlotException{
+        String[] monete = aggregato.split(", ");
         return new DistributoreAutomatico(parseAggregato(new Aggregato(), monete);, parseStrategia(strategia), parseBinari(binari));
     }
 }

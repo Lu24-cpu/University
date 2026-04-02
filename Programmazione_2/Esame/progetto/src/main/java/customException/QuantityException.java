@@ -1,14 +1,14 @@
 package customException;
 
 /**
- * Eccezione personalizzata per segnalare un valore insufficiente.
+ * Eccezione personalizzata per segnalare errori relativi al superamento
+ * della capacità consentita.
  * <p>
- * Viene lanciata quando il valore fornito non è sufficiente per
- * completare un'operazione richiesta, come un pagamento o
- * il raggiungimento di una soglia minima.
+ * Viene lanciata quando una struttura, contenitore o sistema raggiunge
+ * o supera il limite massimo di elementi o risorse gestibili.
  * </p>
  */
-public class InsufficentValueException extends Exception {
+public class QuantityException extends Exception {
 
     /**
      * Identificatore univoco della versione della classe serializzata.
@@ -19,12 +19,11 @@ public class InsufficentValueException extends Exception {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Costruisce una nuova {@code InsufficentValueException} con un messaggio
-     * specificato.
+     * Costruisce una nuova {@code QuantityException} con un messaggio specificato.
      *
      * @param errore messaggio che descrive la causa dell'eccezione
      */
-    public InsufficentValueException(String errore) {
+    public QuantityException(String errore) {
         super(errore);
     }
 }

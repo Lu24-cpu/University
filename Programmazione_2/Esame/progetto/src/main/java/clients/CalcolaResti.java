@@ -23,9 +23,6 @@ package clients;
 
 import java.util.Scanner;
 
-import customException.InsufficentChangeException;
-import customException.InsufficentValueException;
-import customException.InsufficentcoinsException;
 import customException.InvalidImportoException;
 import customException.InvalidResultException;
 import customException.MonetaException;
