@@ -35,19 +35,14 @@ import customException.SlotException;
 import customException.TagliaException;
 import customException.TotalvalueException;
 import macchinetta.Aggregato;
-import macchinetta.Binario;
 import macchinetta.DistributoreAutomatico;
-import macchinetta.StrategiaResto;
 
 public class UsaDistributore {
 
     public static void main(String[] args) {
-        Aggregato cassa = new Aggregato();
-        ArrayList<Binario> rails = new ArrayList<>();
-
         try (Scanner sc = new Scanner(System.in)) {
-            try { rails = Parser.parseBinari(sc.nextLine()); }
-            catch (TagliaException e) { System.out.println(e.getMessage()); }
+            String specs_rails = sc.nextLine();
+            DistributoreAutomatico macchinetta;
 
             try {
                 StringBuilder inputs = new StringBuilder();
@@ -65,22 +60,38 @@ public class UsaDistributore {
                 if (inputs.length()>2) {
                     inputs.setLength(inputs.length() - 2);
                 }
-
-                String[] input = inputs.toString().split(", ");
-
-                cassa.Insert(Parser.parseAggregato(new Aggregato(), input));
+                
+                macchinetta = Parser.parseDistributore(specs_rails, inputs, sc.nextLine());
             } catch (InvalidImportoException | InsufficentcoinsException | TotalvalueException | InvalidResultException | MonetaException e) {
                 System.out.println(e.getMessage());
             }
             
-            StrategiaResto strategy = Parser.parseStrategia(sc.nextLine());
-            DistributoreAutomatico macchinetta = new DistributoreAutomatico(cassa, strategy, rails);
-
             while (sc.hasNext()) {
-                String line = sc.nextLine().trim();
+                String[] elements = sc.nextLine().trim().split(" ! ");
+                String[] specifiche = elements[1].split(";");
+                StringBuilder prodotto = new StringBuilder();
+                String[] q = elements[0].split(" ");
                 try {
-                    if (line.equals("?")) System.out.println(macchinetta);
-                    else System.out.println(Parser.parseDistributore(macchinetta, line));
+
+                    if (elements[0].contains("+")) {
+                        int quantity = Integer.parseInt(q[1]);
+
+                        prodotto.append(specifiche[0]).append("|").append(specifiche[1]).append("|").append(specifiche[2]);
+
+                        try {
+                            macchinetta.caricaBinario(parseProdotto(prodotto.toString()), quantity);
+                        } catch (TagliaException | InvalidImportoException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } else {
+                        int rail = Integer.parseInt(q[1]);
+                        Aggregato importo = new Aggregato();
+
+                        importo = Parser.parseAggregato(importo, q);
+
+                        return "- " + macchinetta.scaricaBinario(rail, importo);
+                    }
+
                 }  catch (EmptyRailException e) {
                     System.out.println("- empty");
                 } catch (InsufficentChangeException e) {
@@ -93,5 +104,4 @@ public class UsaDistributore {
             }
         }
     }
-
 }

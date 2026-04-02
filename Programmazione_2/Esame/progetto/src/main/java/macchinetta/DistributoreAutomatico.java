@@ -93,7 +93,7 @@ public class DistributoreAutomatico {
     public Aggregato scaricaBinario(int rail, Aggregato importo) throws SlotException, EmptyRailException, InsufficentChangeException, InsufficentValueException {
         if (rail > this.rails.size()) throw new SlotException("Il binario non esiste");
         if (rails.get(rail).getProduct() == null || rails.get(rail).getQuantity() == 0) throw new EmptyRailException("Il Binario è vuoto");
-        //Riprendere da qui
+        
         try {
             Prodotto prodotto = this.rails.get(rail).getProduct();
             Importo resto = importo.getTotalImporto().Sub(prodotto.value());

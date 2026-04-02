@@ -16,8 +16,8 @@ public class RestoAlto extends Change {
     public RestoAlto() {}
 
     @Override
-    public List<Moneta> getOrder() {
-        ArrayList<Moneta> values = new ArrayList<Moneta>(List.of(Moneta.values()));
+    public ArrayList<Moneta> getOrder() {
+        ArrayList<Moneta> values = new ArrayList<>(List.of(Moneta.values()));
         Collections.reverse(values);
         return values;
     }

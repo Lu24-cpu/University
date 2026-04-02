@@ -15,8 +15,8 @@ public class RestoBasso extends Change {
     public RestoBasso() {}
 
     @Override
-    public List<Moneta> getOrder() {
-        return new ArrayList<Moneta>(List.of(Moneta.values()));
+    public ArrayList<Moneta> getOrder() {
+        return new ArrayList<>(List.of(Moneta.values()));
     }
 
 }

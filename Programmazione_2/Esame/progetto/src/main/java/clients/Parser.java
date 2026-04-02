@@ -180,36 +180,9 @@ public class Parser {
      * 
      * @param input è la stringa data in input al distributore
      * @return è la stringa contenente il risultato dell'operazione
-     * @throws EmptyRailException se il binario è vuoto
-     * @throws InsufficentChangeException se non ci sono abbastanza monete nel distributore
-     * @throws InsufficentValueException se non c'è abbastanza valore nella cassa
-     * @throws SlotException se è stato selezionato uno slot non disponibile
+     * @throws
      */
-    public static String parseDistributore(DistributoreAutomatico macchinetta, String input) throws EmptyRailException, InsufficentChangeException, InsufficentValueException, SlotException{
-        String[] elements = input.split(" ! ");
-        String[] specifiche = elements[1].split(";");
-        StringBuilder prodotto = new StringBuilder();
-        String[] q = elements[0].split(" ");
-
-        if (input.contains("+")) {
-            int quantity = Integer.parseInt(q[1]);
-
-            prodotto.append(specifiche[0]).append("|").append(specifiche[1]).append("|").append(specifiche[2]);
-
-            try {
-                return "+ " + macchinetta.caricaBinario(parseProdotto(prodotto.toString()), quantity);
-            } catch (TagliaException | InvalidImportoException e) {
-                System.out.println(e.getMessage());
-            }
-        } else {
-            int rail = Integer.parseInt(q[1]);
-            Aggregato importo = new Aggregato();
-
-            importo = Parser.parseAggregato(importo, q);
-
-            return "- " + macchinetta.scaricaBinario(rail, importo);
-        }
-
-        return "";
+    public static DistributoreAutomatico parseDistributore(String binari, String aggregato, String strategia) throws EmptyRailException, InsufficentChangeException, InsufficentValueException, SlotException{
+        return new DistributoreAutomatico(parseAggregato(new Aggregato(), monete);, parseStrategia(strategia), parseBinari(binari));
     }
 }
