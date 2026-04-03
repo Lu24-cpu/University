@@ -3,36 +3,17 @@ package clients;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import customException.EmptyRailException;
-import customException.InsufficentChangeException;
-import customException.InsufficentValueException;
-import customException.InsufficentcoinsException;
-import customException.InvalidImportoException;
-import customException.InvalidResultException;
-import customException.MonetaException;
-import customException.SlotException;
-import customException.TagliaException;
-import customException.TotalvalueException;
-import macchinetta.Aggregato;
-import macchinetta.Binario;
-import macchinetta.DistributoreAutomatico;
-import macchinetta.Importo;
-import macchinetta.Moneta;
-import macchinetta.Prodotto;
-import macchinetta.RestoAlto;
-import macchinetta.RestoBasso;
-import macchinetta.RestoMedio;
-import macchinetta.StrategiaResto;
-import macchinetta.Taglia;
+import customException.*;
+import macchinetta.*;
 
 /**
  * Questa classe, chiamata {@code Parser}, viene usata per convertire stringhe in oggetti del tipo:
  * <ol>
- *      <li>{@code Moneta} che è la rappresentazione delle monete possibili</li>
- *      <li>{@code Aggregato} che è un insieme di monete con le loro quantità</li>
- *      <li>{@code Importo} che è un valore in centesimi e unità salvate in variabili intere</li>
- *      <li>{@code Binario} che è un oggetto composto da prodotto, taglia, quantià e capacità</li>
- *      <li>{@code Prodotto} che è un oggetto che rappresenta un elemento composto da nome, taglie e importo</li>
+ *      <li>{@link Moneta} che è la rappresentazione delle monete possibili</li>
+ *      <li>{@link Aggregato} che è un insieme di monete con le loro quantità</li>
+ *      <li>{@link Importo} che è un valore in centesimi e unità salvate in variabili intere</li>
+ *      <li>{@link Binario} che è un oggetto composto da prodotto, taglia, quantià e capacità</li>
+ *      <li>{@link Prodotto} che è un oggetto che rappresenta un elemento composto da nome, taglie e importo</li>
  * </ol>
  */
 public class Parser {
@@ -182,8 +163,8 @@ public class Parser {
      * @return è la stringa contenente il risultato dell'operazione
      * @throws
      */
-    public static DistributoreAutomatico parseDistributore(String binari, String aggregato, String strategia) throws EmptyRailException, InsufficentChangeException, InsufficentValueException, SlotException{
+    public static DistributoreAutomatico parseDistributore(String binari, String aggregato, String strategia) throws TagliaException, TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException, MonetaException{
         String[] monete = aggregato.split(", ");
-        return new DistributoreAutomatico(parseAggregato(new Aggregato(), monete);, parseStrategia(strategia), parseBinari(binari));
+        return new DistributoreAutomatico(parseAggregato(new Aggregato(), monete), parseStrategia(strategia), parseBinari(binari));
     }
 }

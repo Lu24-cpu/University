@@ -1,8 +1,6 @@
 package macchinetta;
 
 import customException.*;
-import customException.QuantityException;
-import customException.TotalvalueException;
 
 /**
  * {@code RestoMedio} permette la gestione del calcolo di un {@code aggregato} per il resto 
@@ -17,12 +15,12 @@ public class RestoMedio implements StrategiaResto{
     public RestoMedio(){}
 
     @Override
-    public Aggregato Resto(Aggregato cassa, Importo resto) throws TotalvalueException, InvalidResultException, InvalidImportoException {
+    public Aggregato Resto(Aggregato cassa, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidImportoException, InvalidResultException {
         Aggregato copy = new Aggregato();
         try {
             copy.Insert(cassa);
-        } catch (QuantityException e) {
-            throw new InvalidResultException("quantità insufficente di monete");
+        } catch (TotalvalueException e) {
+            throw new InsufficentChangeException("quantità insufficente di monete");
         }
 
         if (resto.compareTo(cassa.getTotalImporto())>0) throw new InvalidResultException("quantità insufficente di monete");
@@ -41,7 +39,7 @@ public class RestoMedio implements StrategiaResto{
      * @throws InvalidImportoException se l'{@code importo} calcolato non è valido
      * @throws InvalidResultException se l'{@code importo} calcolato è negativo
      */
-    private Aggregato calcolo(Aggregato copia, Importo resto) throws TotalvalueException, InvalidResultException, InvalidImportoException {
+    private Aggregato calcolo(Aggregato copia, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidImportoException, InvalidResultException {
         Aggregato change = new Aggregato();
         Moneta[] tagli = Moneta.values();
         Moneta[] reverse = Moneta.values();
@@ -70,9 +68,9 @@ public class RestoMedio implements StrategiaResto{
                 }
             }
         } catch (TotalvalueException e) {
-            throw new InvalidResultException("importo insufficente");
-        } catch (QuantityException e) {
-            throw new TotalvalueException("quantità di moneta insufficente");
+            throw new InsufficentValueException("importo insufficente");
+        } catch (InsufficentcoinsException e) {
+            throw new InsufficentChangeException("quantità di moneta insufficente");
         }
 
         return change;

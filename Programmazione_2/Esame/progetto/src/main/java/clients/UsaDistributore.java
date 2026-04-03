@@ -61,46 +61,46 @@ public class UsaDistributore {
                     inputs.setLength(inputs.length() - 2);
                 }
                 
-                macchinetta = Parser.parseDistributore(specs_rails, inputs, sc.nextLine());
-            } catch (InvalidImportoException | InsufficentcoinsException | TotalvalueException | InvalidResultException | MonetaException e) {
-                System.out.println(e.getMessage());
-            }
-            
-            while (sc.hasNext()) {
-                String[] elements = sc.nextLine().trim().split(" ! ");
-                String[] specifiche = elements[1].split(";");
-                StringBuilder prodotto = new StringBuilder();
-                String[] q = elements[0].split(" ");
-                try {
+                macchinetta = Parser.parseDistributore(specs_rails, inputs.toString(), sc.nextLine());
+                
+                while (sc.hasNext()) {
+                    String[] elements = sc.nextLine().trim().split(" ! ");
+                    String[] specifiche = elements[1].split(";");
+                    StringBuilder prodotto = new StringBuilder();
+                    String[] q = elements[0].split(" ");
+                    try {
 
-                    if (elements[0].contains("+")) {
-                        int quantity = Integer.parseInt(q[1]);
+                        if (elements[0].contains("+")) {
+                            int quantity = Integer.parseInt(q[1]);
 
-                        prodotto.append(specifiche[0]).append("|").append(specifiche[1]).append("|").append(specifiche[2]);
+                            prodotto.append(specifiche[0]).append("|").append(specifiche[1]).append("|").append(specifiche[2]);
 
-                        try {
-                            macchinetta.caricaBinario(parseProdotto(prodotto.toString()), quantity);
-                        } catch (TagliaException | InvalidImportoException e) {
-                            System.out.println(e.getMessage());
+                            try {
+                                macchinetta.caricaBinario(Parser.parseProdotto(prodotto.toString()), quantity);
+                            } catch (TagliaException | InvalidImportoException e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } else {
+                            int rail = Integer.parseInt(q[1]);
+                            Aggregato importo = new Aggregato();
+
+                            importo = Parser.parseAggregato(importo, q);
+
+                            macchinetta.scaricaBinario(rail, importo);
                         }
-                    } else {
-                        int rail = Integer.parseInt(q[1]);
-                        Aggregato importo = new Aggregato();
 
-                        importo = Parser.parseAggregato(importo, q);
-
-                        return "- " + macchinetta.scaricaBinario(rail, importo);
+                    }  catch (EmptyRailException e) {
+                        System.out.println("- empty");
+                    } catch (InsufficentChangeException e) {
+                        System.out.println("- change");
+                    } catch (InsufficentValueException e) {
+                        System.out.println("- value");
+                    } catch (SlotException e) {
+                        System.out.println("- slot");
                     }
-
-                }  catch (EmptyRailException e) {
-                    System.out.println("- empty");
-                } catch (InsufficentChangeException e) {
-                    System.out.println("- change");
-                } catch (InsufficentValueException e) {
-                    System.out.println("- value");
-                } catch (SlotException e) {
-                    System.out.println("- slot");
                 }
+            } catch (TagliaException | TotalvalueException | InsufficentcoinsException | InvalidImportoException | InvalidResultException | MonetaException e) {
+                System.out.println(e.getMessage());
             }
         }
     }

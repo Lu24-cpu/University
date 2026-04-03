@@ -1,7 +1,7 @@
 package macchinetta;
 
+import customException.CapacityException;
 import customException.EmptyRailException;
-import customException.QuantityException;
 import customException.SlotException;
 import customException.TagliaException;
 
@@ -50,13 +50,13 @@ public class Binario {
      * @param quantità è la quantità di {@code prodotto} da inserire nel {@code binario}
      * @throws TagliaException se la taglia del {@code prodotto} non è minore o uguale a quella del {@code binario}
      * @throws SlotException se il {@code prodotto} non è lo stesso di quello già presente nel {@code binario}
-     * @throws QuantityException se la {@code quantità} inserita con quella già presente sfora la {@code capacità} massima
+     * @throws CapacityException se la {@code quantità} inserita con quella già presente sfora la {@code capacità} massima
      */
-    public void uploadRail(Prodotto prodotto, int quantità) throws TagliaException, SlotException, QuantityException {
+    public void uploadRail(Prodotto prodotto, int quantità) throws TagliaException, SlotException, CapacityException {
         if(size.compareTo(prodotto.size())<0) throw new TagliaException("Taglia non conforme");
 
         if(!product.equals(prodotto) && !product.equals(new Prodotto("", size, new Importo(0)))) throw new SlotException("item");
-        if(quantità + quantity > capacity) throw new QuantityException("capacity");
+        if(quantità + quantity > capacity) throw new CapacityException("capacity");
 
         if(product.equals(new Prodotto("", size, new Importo(0)))) {
             product = prodotto;
@@ -69,12 +69,12 @@ public class Binario {
      * {@code unloadRail} è un metodo che scarica una data quantità di prodotto da un {@code binario}
      * 
      * @param quantità è la quantità di prodotto che si vuole rimuovede dal {@code binario}
-     * @throws QuantityException se si cerca di rimuovere più prodotti dal {@code binario} rispetto a quelli presenti.
+     * @throws CapacityException se si cerca di rimuovere più prodotti dal {@code binario} rispetto a quelli presenti.
      * @throws EmptyRailException se il {@code binario} è vuoto
      */
-    public void unloadRail(int quantità) throws QuantityException, EmptyRailException {
+    public void unloadRail(int quantità) throws CapacityException, EmptyRailException {
         if(quantity == 0) throw new EmptyRailException("Il binario è vuoto");
-        if(quantity < quantità) throw new QuantityException("Richiesta di scarico binario eccessivo");
+        if(quantity < quantità) throw new CapacityException("Richiesta di scarico binario eccessivo");
     
         quantity -= quantità;
     }

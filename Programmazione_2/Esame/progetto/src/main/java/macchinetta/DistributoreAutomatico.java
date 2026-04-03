@@ -72,7 +72,7 @@ public class DistributoreAutomatico {
                     rail.uploadRail(product, finale);
                     quantity -= finale;
                 }
-            } catch (CapacityException | InvalidItemException | TagliaException e) {}
+            } catch (CapacityException | TagliaException e) {}
         }
         
         return quantity;

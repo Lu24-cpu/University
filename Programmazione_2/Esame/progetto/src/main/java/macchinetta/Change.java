@@ -2,9 +2,11 @@ package macchinetta;
 
 import java.util.List;
 
+import customException.InsufficentChangeException;
+import customException.InsufficentValueException;
+import customException.InsufficentcoinsException;
 import customException.InvalidImportoException;
 import customException.InvalidResultException;
-import customException.QuantityException;
 import customException.TotalvalueException;
 
 /**
@@ -19,7 +21,7 @@ public abstract class Change implements StrategiaResto {
     public Change() {}
 
     @Override
-    public Aggregato Resto(Aggregato cassa, Importo resto) throws TotalvalueException, InvalidResultException, InvalidImportoException {
+    public Aggregato Resto(Aggregato cassa, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidResultException, InvalidImportoException {
         Aggregato change = new Aggregato();
         Aggregato copy = new Aggregato();
         List<Moneta> register = getOrder();
@@ -52,10 +54,10 @@ public abstract class Change implements StrategiaResto {
             cassa.Empty();
             cassa.Insert(copy);
 
-        } catch(QuantityException e) {
-            throw new TotalvalueException("quantità di moneta insufficente");
+        } catch(InsufficentcoinsException e) {
+            throw new InsufficentChangeException("quantità di moneta insufficente");
         } catch(TotalvalueException e) {
-            throw new InvalidResultException("quantità di moneta insufficente");
+            throw new InsufficentValueException("quantità di moneta insufficente");
         }
     
         return change;

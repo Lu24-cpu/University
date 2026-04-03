@@ -1,8 +1,10 @@
 package macchinetta;
 
+import customException.InsufficentChangeException;
+import customException.InsufficentValueException;
 import customException.InvalidImportoException;
 import customException.InvalidResultException;
-import customException.TotalvalueException;
+
 
 /**
  * {@code StrategiaResto} è un intergaffia che rappresenta il contratto per la gestione dei resti di un {@code distributore automatico}
@@ -20,6 +22,6 @@ public interface StrategiaResto {
      * @throws InvalidImportoException se l'{@code importo} calcolato non è valido
      * @throws InvalidResultException se non c'è abbastanza {@code resto} in {@code cassa}
      */
-    public Aggregato Resto(Aggregato cassa, Importo resto) throws TotalvalueException, InvalidResultException, InvalidImportoException;
+    public Aggregato Resto(Aggregato cassa, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidResultException, InvalidImportoException;
 
 }

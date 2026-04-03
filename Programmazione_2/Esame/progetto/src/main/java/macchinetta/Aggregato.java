@@ -3,9 +3,9 @@ package macchinetta;
 import java.util.Map;
 import java.util.TreeMap;
 
+import customException.InsufficentcoinsException;
 import customException.InvalidImportoException;
 import customException.InvalidResultException;
-import customException.QuantityException;
 import customException.TotalvalueException;
 
 /**
@@ -43,10 +43,10 @@ public class Aggregato {
      *
      * @param coin è la {@code moneta} che va inserita nell'{@code aggregato}
      * @param quantity è la quantità della {@code moneta} inserita
-     * @throws QuantityException se la quantità di monete è negativa
+     * @throws TotalvalueException se la quantità di monete è negativa
      */
-    public void Insert(Moneta coin, int quantity) throws QuantityException {
-        if (quantity < 0) throw new QuantityException("quantità negativa");
+    public void Insert(Moneta coin, int quantity) throws TotalvalueException {
+        if (quantity < 0) throw new TotalvalueException("quantità negativa");
         aggregato.put(coin, quantity+aggregato.getOrDefault(coin, 0));
     }
 
@@ -55,9 +55,9 @@ public class Aggregato {
      * In questo caso viene passato in input un altro {@code aggregato} e viene inserito in quello corrente
      *
      * @param change è l'{@code aggregato} da reinserire in quello corrente
-     * @throws QuantityException se la quantità di monete è negativa
+     * @throws TotalvalueException se la quantità di monete è negativa
      */
-    public void Insert(Aggregato change) throws QuantityException {
+    public void Insert(Aggregato change) throws TotalvalueException {
         Moneta[] values = Moneta.values();
         
         for (Moneta value : values) {
@@ -75,12 +75,12 @@ public class Aggregato {
      * @throws InvalidImportoException se il calcolo dell'{@code importo} totale non è corretto
      * @throws InvalidResultException se il risultato del calcolo dell'{@code importo} risulta negativa
      */
-    public void Remove(Moneta coin, int quantity) throws TotalvalueException, QuantityException, InvalidImportoException, InvalidResultException {
+    public void Remove(Moneta coin, int quantity) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException {
         if(aggregato.containsKey(coin) && aggregato.get(coin) >= quantity) {
             aggregato.put(coin, aggregato.get(coin)-quantity);
         } else {
             if (getTotalImporto().getTotalCents() < quantity * coin.getValue().getTotalCents()) throw new TotalvalueException("Valore complessivo non sufficente");
-            throw new QuantityException("Quantità di moneta insufficente");
+            throw new InsufficentcoinsException("Quantità di moneta insufficente");
         }
     }
 
@@ -93,7 +93,7 @@ public class Aggregato {
      * @throws InvalidImportoException se il calcolo dell'{@code importo} totale non è corretto
      * @throws InvalidResultException se il risultato del calcolo dell'{@code importo} risulta negativa
      */
-    public void Remove(Aggregato change) throws TotalvalueException, QuantityException, InvalidImportoException, InvalidResultException {
+    public void Remove(Aggregato change) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException {
         Moneta[] values = Moneta.values();
         Aggregato copia = new Aggregato();
         
@@ -108,14 +108,14 @@ public class Aggregato {
     }
 
     /**
-     * {@code Svuota} è un metodo che svuota completamente un aggregato
+     * {@code Empty} è un metodo che svuota completamente un aggregato
      */
     public void Empty() {
         aggregato.clear();
     }
 
     /**
-     * {@code getAggregato} restituisce la quantità di una {@code moneta} indicata
+     * {@code getQuantity} restituisce la quantità di una {@code moneta} indicata
      *
      * @param coin è la {@code moneta} di cui si vuole sapere la quantità
      * @return è la quantità di una {@code moneta} indicata
