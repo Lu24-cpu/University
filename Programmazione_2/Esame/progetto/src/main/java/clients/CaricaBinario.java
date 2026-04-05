@@ -49,7 +49,7 @@ public class CaricaBinario {
                         System.out.println("capacity");
                     } catch (TagliaException e) {
                         System.out.println("size");
-                    } catch (SlotException e) {
+                    } catch (InvalidItemException e) {
                         System.out.println("item");
                     }
                 }

@@ -23,11 +23,7 @@ package clients;
 
 import java.util.Scanner;
 
-import customException.InsufficentcoinsException;
-import customException.InvalidImportoException;
-import customException.InvalidResultException;
-import customException.MonetaException;
-import customException.TotalvalueException;
+import customException.*;
 import macchinetta.Aggregato;
 
 public class OperazioniAggregati {
@@ -45,7 +41,8 @@ public class OperazioniAggregati {
 
                     if (input[0].contains("+")) {
                         input[0] = input[0].replaceAll("\\+ ", "");
-                        cassa.Insert(Parser.parseAggregato(new Aggregato(), input));
+                        Aggregato parziale = Parser.parseAggregato(new Aggregato(), input);
+                        cassa.Insert(parziale);
                     } else {
                         input[0] = input[0].replaceAll("\\- ", "");
                         cassa.Remove(Parser.parseAggregato(new Aggregato(), input));

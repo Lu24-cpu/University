@@ -3,17 +3,7 @@ package macchinetta;
 
 import java.util.List;
 
-import customException.CapacityException;
-import customException.EmptyRailException;
-import customException.InsufficentChangeException;
-import customException.InsufficentValueException;
-import customException.InsufficentcoinsException;
-import customException.InvalidImportoException;
-import customException.InvalidItemException;
-import customException.InvalidResultException;
-import customException.SlotException;
-import customException.TagliaException;
-import customException.TotalvalueException;
+import customException.*;
 
 /**
  * {@code DistributoreAutomatico} è la classe che gestisce tutte le possibili funzioni di un effettivo distributore automatico
@@ -72,7 +62,7 @@ public class DistributoreAutomatico {
                     rail.uploadRail(product, finale);
                     quantity -= finale;
                 }
-            } catch (CapacityException | TagliaException e) {}
+            } catch (CapacityException | TagliaException | InvalidItemException e) {}
         }
         
         return quantity;
@@ -94,16 +84,21 @@ public class DistributoreAutomatico {
         if (rail > this.rails.size()) throw new SlotException("Il binario non esiste");
         if (rails.get(rail).getProduct() == null || rails.get(rail).getQuantity() == 0) throw new EmptyRailException("Il Binario è vuoto");
         
+        Aggregato copia = new Aggregato();
         try {
+            copia.Insert(cashier);
+            copia.Insert(importo);
             Prodotto prodotto = this.rails.get(rail).getProduct();
             Importo resto = importo.getTotalImporto().Sub(prodotto.value());
-            Aggregato changeAgg = strategy.Resto(cashier, resto);
+            Aggregato changeAgg = strategy.Resto(copia, resto);
             
             rails.get(rail).unloadRail(1);
+            cashier.Empty();
+            cashier.Insert(copia);
             return changeAgg;
         } catch (InsufficentChangeException e) {
             throw new InsufficentChangeException("resto non riuscito");
-        } catch (InsufficentValueException | CapacityException | InvalidImportoException | InvalidResultException | NumberFormatException e) {
+        } catch (InsufficentValueException | TotalvalueException |CapacityException | InvalidImportoException | InvalidResultException | NumberFormatException e) {
             throw new InsufficentValueException("resto non disponibile");
         }
     }
@@ -113,7 +108,11 @@ public class DistributoreAutomatico {
      * 
      * @param coin è la moneta da modificare
      * @param quantity è la quantità da inserire o rimuovere
-     * @throws InsufficentcoinsException
+     * @param type è l'indicazione della modifica che si vuole fare alla {@code cassa}
+     * @throws InsufficentcoinsException se non ci sono abbastanza {@code monete} di quel taglio da rimuovere
+     * @throws TotalvalueException se nel rimuovere una {@code moneta} è stato riscontrato un problema
+     * @throws InvalidImportoException se nel calcolo dell'{@code importo} dell'{@code aggregato} è stato riscontrato un problema
+     * @throws InvalidResultException se nel calcolo dell'{@code importo} dell'{@code aggregato} è stato riscontrato un problema
      */
     public void ModifyAggregato(Moneta coin, int quantity, char type) throws InsufficentcoinsException, TotalvalueException, InvalidImportoException, InvalidResultException {
         if(type == '+') cashier.Insert(coin, quantity);

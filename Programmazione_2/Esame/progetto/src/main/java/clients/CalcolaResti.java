@@ -64,11 +64,11 @@ public class CalcolaResti {
 
                         resto = change.Resto(cassa, value);
                         System.out.println(resto);
-                    } catch (InsufficentChangeException | InsufficentcoinsException e) {
+                    } catch (InsufficentChangeException | InsufficentcoinsException | TotalvalueException e) {
                         System.out.println("change-not-possible");
-                    } catch (InsufficentValueException | TotalvalueException e) {
+                    } catch (InsufficentValueException | InvalidResultException e) {
                         System.out.println("insufficient-value");
-                    } catch (InvalidImportoException | InvalidResultException | MonetaException e) {
+                    } catch (InvalidImportoException | MonetaException e) {
                         System.out.println(e.getMessage());
                     }
                 }

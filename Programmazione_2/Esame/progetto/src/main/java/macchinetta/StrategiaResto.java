@@ -7,7 +7,7 @@ import customException.InvalidResultException;
 
 
 /**
- * {@code StrategiaResto} è un intergaffia che rappresenta il contratto per la gestione dei resti di un {@code distributore automatico}
+ * {@code StrategiaResto} è un intergaffia che rappresenta il contratto per la gestione dei resti di un {@link DistributoreAutomatico}
  */
 public interface StrategiaResto {
 
@@ -18,9 +18,10 @@ public interface StrategiaResto {
      * @param cassa è l'{@code aggregato} corrispondente alla cassa del {@code distributore}
      * @param resto è l'{@code importo} che rappresenta il resto che deve essere calcolato
      * @return l'{@code aggregato} corrispondente al resto calcolato, in base alla strategia utilizzata
-     * @throws TotalvalueException se non c'è abbastanza {@code Moneta} di un taglio in cassa
+     * @throws InsufficentChangeException se non è stato possibile dare il {@code resto} con le {@code monete} adeguate
+     * @throws InsufficentValueException se l'{@code importo} totale della {@code cassa} è minore del {@code resto} da dare
      * @throws InvalidImportoException se l'{@code importo} calcolato non è valido
-     * @throws InvalidResultException se non c'è abbastanza {@code resto} in {@code cassa}
+     * @throws InvalidResultException se l'{@code importo} calcolato è negativo
      */
     public Aggregato Resto(Aggregato cassa, Importo resto) throws InsufficentChangeException, InsufficentValueException, InvalidResultException, InvalidImportoException;
 

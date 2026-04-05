@@ -61,7 +61,7 @@ public class Aggregato {
         Moneta[] values = Moneta.values();
         
         for (Moneta value : values) {
-            Insert(value, getQuantity(value));
+            Insert(value, change.getQuantity(value));
         }
     }
 
@@ -71,7 +71,7 @@ public class Aggregato {
      * @param coin è la moneta presa in considerazione
      * @param quantity è la quantità che si vuole togliede dall'aggregato
      * @throws TotalvalueException se l'imprto totale che si vuole togliere è maggiore di quello presente nell'{@code aggregato}
-     * @throws QuantityException se la quantità di moneta nell'{@code aggregato} non è sufficente
+     * @throws InsufficentcoinsException se la quantità di moneta nell'{@code aggregato} non è sufficente
      * @throws InvalidImportoException se il calcolo dell'{@code importo} totale non è corretto
      * @throws InvalidResultException se il risultato del calcolo dell'{@code importo} risulta negativa
      */
@@ -89,7 +89,7 @@ public class Aggregato {
      * 
      * @param change è l'{@code aggregato} che va rimosso da quello corrente
      * @throws TotalvalueException se l'imprto totale che si vuole togliere è maggiore di quello presente nell'{@code aggregato}
-     * @throws QuantityException se la quantità di moneta nell'{@code aggregato} non è sufficente
+     * @throws InsufficentcoinsException se la quantità di moneta nell'{@code aggregato} non è sufficente
      * @throws InvalidImportoException se il calcolo dell'{@code importo} totale non è corretto
      * @throws InvalidResultException se il risultato del calcolo dell'{@code importo} risulta negativa
      */
@@ -100,7 +100,7 @@ public class Aggregato {
         copia.Insert(this);
 
         for (Moneta value : values) {
-            copia.Remove(value, getQuantity(value));
+            copia.Remove(value, change.getQuantity(value));
         }
 
         this.Empty();
@@ -121,7 +121,7 @@ public class Aggregato {
      * @return è la quantità di una {@code moneta} indicata
      */
     public int getQuantity(Moneta coin){
-        return aggregato.get(coin);
+        return aggregato.getOrDefault(coin, 0);
     }
 
     /**

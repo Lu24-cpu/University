@@ -135,12 +135,6 @@ public class Importo implements Comparable<Importo> {
         return getTotalCents()/operando.getTotalCents();
     }
 
-    /** !!! so che non serve questa documentazione ma è per ricordarmi come funziona !!!
-     * {@code equals} è un metodo che controlla se due {@code Importi} sono uguali
-     * 
-     * @param comparate è l'oggetto da comparare all'importo corrente
-     * @return {@code true} se sono entrambi {@code importi} e sono uguali, false altrimenti
-     */
     @Override
     public boolean equals(Object comparate) {
         if (comparate instanceof Importo value) {
@@ -150,22 +144,11 @@ public class Importo implements Comparable<Importo> {
         return false;
     }
 
-    /** !!! so che non serve questa documentazione ma è per ricordarmi come funziona !!!
-     * {@code hashCode} resituisce un valore di hash rappresentante l'{@code importo} corrente
-     * 
-     * @return il valore hash (int) rappresentante l'{@code importo} corrente
-     */
     @Override
     public int hashCode() {
         return Objects.hash(units, cents);
     }
 
-    /** !! so che non serve questa documentazione me la segno per ricordarmi una cosa !!
-     * {@code compareTo} ha bisogno che la classe sia inizializzata come implements Comparable &lt;nome_classe&gt;
-     * 
-     * @param value è l'imporo da comparare
-     * @return il risultato del confronto
-     */
     @Override
     public int compareTo(Importo value) {
         int value1 = getTotalCents(), value2 = value.getTotalCents();

@@ -2,12 +2,7 @@ package macchinetta;
 
 import java.util.List;
 
-import customException.InsufficentChangeException;
-import customException.InsufficentValueException;
-import customException.InsufficentcoinsException;
-import customException.InvalidImportoException;
-import customException.InvalidResultException;
-import customException.TotalvalueException;
+import customException.*;
 
 /**
  * {@code Change} è una classe astratta che implementa l'interfaccia del resto ({@link StrategiaResto})
@@ -45,7 +40,7 @@ public abstract class Change implements StrategiaResto {
             
             if (resto.getTotalCents() != 0) {
                 if (cassa.getTotalImporto().getTotalCents() > resto.getTotalCents()) {
-                    throw new TotalvalueException("Resto non disponibile");
+                    throw new InsufficentChangeException("Resto non disponibile");
                 } else {
                     throw new InvalidResultException("Importo nella cassa insufficente");
                 }
@@ -53,21 +48,18 @@ public abstract class Change implements StrategiaResto {
 
             cassa.Empty();
             cassa.Insert(copy);
-
+            return change;
         } catch(InsufficentcoinsException e) {
             throw new InsufficentChangeException("quantità di moneta insufficente");
         } catch(TotalvalueException e) {
             throw new InsufficentValueException("quantità di moneta insufficente");
         }
-    
-        return change;
     }
 
     /**
-     * {@code getOrder} restituisce la mappa dell'{@code aggregato} cassa nell'ordine selezionato dalla strategia
+     * {@code getOrder} restituisce una lista delle {@code monete} in base ad un ordine specificato
      * 
-     * @param cassa è l'{@code aggregato} di cui viene restituita la mappa
-     * @return la mappa della {@code cassa} in ordine basato sulla strategia
+     * @return la lista delle {@code monete} in ordine basato sulla strategia
      */
     public abstract List<Moneta> getOrder();
 

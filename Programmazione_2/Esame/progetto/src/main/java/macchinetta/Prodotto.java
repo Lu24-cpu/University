@@ -21,12 +21,6 @@ public record Prodotto(String name, Taglia size, Importo value) {
      * 
      */
 
-    /*
-     * Ho rimosso equals e hashCode in quanto in un record vengono generati automaticamente dal compilatore,
-     * per cui non sono necessari. Fosse stata una classe normale (come nella versione senza record) sarebbe 
-     * stata necessaria la sua implementazione.
-     */
-
     @Override
     public String toString() {
         StringBuilder product = new StringBuilder();

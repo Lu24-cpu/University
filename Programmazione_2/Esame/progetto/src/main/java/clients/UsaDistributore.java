@@ -21,19 +21,9 @@ along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 package clients;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import customException.EmptyRailException;
-import customException.InsufficentChangeException;
-import customException.InsufficentValueException;
-import customException.InsufficentcoinsException;
-import customException.InvalidImportoException;
-import customException.InvalidResultException;
-import customException.MonetaException;
-import customException.SlotException;
-import customException.TagliaException;
-import customException.TotalvalueException;
+import customException.*;
 import macchinetta.Aggregato;
 import macchinetta.DistributoreAutomatico;
 
@@ -64,39 +54,47 @@ public class UsaDistributore {
                 macchinetta = Parser.parseDistributore(specs_rails, inputs.toString(), sc.nextLine());
                 
                 while (sc.hasNext()) {
-                    String[] elements = sc.nextLine().trim().split(" ! ");
-                    String[] specifiche = elements[1].split(";");
-                    StringBuilder prodotto = new StringBuilder();
-                    String[] q = elements[0].split(" ");
-                    try {
+                    String line = sc.nextLine();
 
-                        if (elements[0].contains("+")) {
-                            int quantity = Integer.parseInt(q[1]);
+                    if(line.equals("?")) System.out.println(macchinetta);
+                    else {
+                        String[] elements = line.trim().split(" ! ");
+                        String[] specifiche = elements[1].split(";");
+                        StringBuilder prodotto = new StringBuilder();
+                        String[] q = elements[0].split(" ");
 
-                            prodotto.append(specifiche[0]).append("|").append(specifiche[1]).append("|").append(specifiche[2]);
+                        try {
 
-                            try {
-                                macchinetta.caricaBinario(Parser.parseProdotto(prodotto.toString()), quantity);
-                            } catch (TagliaException | InvalidImportoException e) {
-                                System.out.println(e.getMessage());
+                            if (elements[0].contains("+")) {
+                                int quantity = Integer.parseInt(q[1]);
+
+                                prodotto.append(specifiche[0]).append("|").append(specifiche[1]).append("|").append(specifiche[2]);
+
+                                try {
+                                    int rest = macchinetta.caricaBinario(Parser.parseProdotto(prodotto.toString()), quantity);
+                                    System.out.println("+ " + rest);
+                                } catch (TagliaException | InvalidImportoException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            } else {
+                                int rail = Integer.parseInt(q[1]);
+                                Aggregato importo = new Aggregato();
+
+                                importo = Parser.parseAggregato(importo, specifiche);
+
+                                Aggregato resto = macchinetta.scaricaBinario(rail, importo);
+                                System.out.println("- " + resto);
                             }
-                        } else {
-                            int rail = Integer.parseInt(q[1]);
-                            Aggregato importo = new Aggregato();
 
-                            importo = Parser.parseAggregato(importo, q);
-
-                            macchinetta.scaricaBinario(rail, importo);
+                        }  catch (EmptyRailException e) {
+                            System.out.println("- empty");
+                        } catch (InsufficentChangeException e) {
+                            System.out.println("- change");
+                        } catch (InsufficentValueException e) {
+                            System.out.println("- value");
+                        } catch (SlotException e) {
+                            System.out.println("- slot");
                         }
-
-                    }  catch (EmptyRailException e) {
-                        System.out.println("- empty");
-                    } catch (InsufficentChangeException e) {
-                        System.out.println("- change");
-                    } catch (InsufficentValueException e) {
-                        System.out.println("- value");
-                    } catch (SlotException e) {
-                        System.out.println("- slot");
                     }
                 }
             } catch (TagliaException | TotalvalueException | InsufficentcoinsException | InvalidImportoException | InvalidResultException | MonetaException e) {

@@ -96,8 +96,9 @@ public class Parser {
      * @throws MonetaException se la moneta inserita non è valida
      */
     public static Aggregato parseAggregato(Aggregato cassa, String[] input) throws TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException, MonetaException {
-        for (int i = 0; i < input.length; i++) {
-            String[] single = input[i].split(" ");
+        for (String el : input) {
+            el = el.trim();
+            String[] single = el.split(" ");
             cassa.Insert(Moneta.moneta(parseImporto(single[2])), Integer.parseInt(single[0]));
         }
 
@@ -159,9 +160,16 @@ public class Parser {
     /**
      * {@code parseDistributore} permette di gestire gli input di un distributore automatico
      * 
-     * @param input è la stringa data in input al distributore
-     * @return è la stringa contenente il risultato dell'operazione
-     * @throws
+     * @param binari è la strnga con le specifiche dei {@code binari} del distributore
+     * @param aggregato è la stringa contente le specifiche dell'{@code aggregato} di {@code cassa}
+     * @param strategia è la stringa con l'identificatore della {@code strategia} del distributore
+     * @return è un oggetto del tipo {@code distributore}
+     * @throws TagliaException se una specifica di un {@code binario} non è conforme
+     * @throws TotalvalueException se è stato lanciato un errore nella creazione dell'{@code aggregato} della cassa
+     * @throws InsufficentcoinsException se è stato lanciato un errore nella creazione dell'{@code aggregato} della cassa
+     * @throws InvalidImportoException se è stato lanciato un errore nella creazione dell'{@code aggregato} della cassa
+     * @throws InvalidResultException se è stato lanciato un errore nella creazione dell'{@code aggregato} della cassa
+     * @throws MonetaException se è stato lanciato un errore nella creazione dell'{@code aggregato} della cassa
      */
     public static DistributoreAutomatico parseDistributore(String binari, String aggregato, String strategia) throws TagliaException, TotalvalueException, InsufficentcoinsException, InvalidImportoException, InvalidResultException, MonetaException{
         String[] monete = aggregato.split(", ");
